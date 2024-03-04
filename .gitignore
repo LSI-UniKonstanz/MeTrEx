@@ -3,3 +3,7 @@
 *.xtc
 *.xvg
 .DS_Store
+.gitignore
+
+# Ignore folder
+.ipynb_checkpoints/

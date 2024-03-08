@@ -2026,7 +2026,7 @@ class MenuAction(QAction):
             selection_strings.add('all')
             from_frame = self.parent.slider_position_molecules
             to_frame = from_frame + 1
-            if self.sender().accessibleName() == 'save_selection':
+            if self.accessibleName() == 'save_selection': #FIX by Beat, removed .sender()
                 dlg = AnalysisSelectionDialog(
                     'all',
                     atoms=self.parent.data.atoms,
@@ -2355,7 +2355,7 @@ class MenuAction(QAction):
             self.showCautionMessageBox()
         else:
             single_view = True
-            if self.sender().accessibleName() == 'multiple':
+            if self.accessibleName() == 'multiple': #FIX by Beat, removed .sender()
                 single_view = False
             dlg = AnalysisSelectionDialog(
                 'all',
@@ -2599,7 +2599,7 @@ class MenuAction(QAction):
             self.showCautionMessageBox()
         else:
             single_view = True
-            if self.sender().accessibleName() == 'multiple':
+            if self.accessibleName() == 'multiple': #FIX by Beat, removed .sender()
                 single_view = False
             dlg = AnalysisSelectionDialog(
                 'drug_molecules',

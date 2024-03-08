@@ -1,6 +1,6 @@
 """This is the gui module.
 
-The gui module contains all parameters and classes relevant for the 
+The gui module contains all parameters and classes relevant for the
 functionalities and visualisation of the gui.
 
 
@@ -9,10 +9,10 @@ Classes:
 MainWindow:
     The main window of MeTrEx.
 SubWindow:
-    Separate window to show any kind of data, 
+    Separate window to show any kind of data,
     e.g. external loaded data.
 BottomView:
-    Object for showing analysed parameters of the data. 
+    Object for showing analysed parameters of the data.
 BottomViewGroup:
     Container for BottomViews. Extendable for dran-and-drop option.
 DocumentationWindow:
@@ -20,12 +20,12 @@ DocumentationWindow:
 MainSlider:
     Slider as GUI element.
 MenuAction:
-    Interface for GUI elements, visualisation, analyses and data 
+    Interface for GUI elements, visualisation, analyses and data
     objects.
 
 Parameter:
 ----
-slider_style: 
+slider_style:
     Slider properties in CSS format.
 """
 
@@ -55,7 +55,7 @@ from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT
 import matplotlib.pyplot as plt
 #from mpl_toolkits.mplot3d import axes3d
 from mpl_toolkits.mplot3d.art3d import Line3DCollection
-import MDAnalysis as mda    
+import MDAnalysis as mda
 from visualisations import MainPlotCanvas, SubPlotCanvas
 from dialogs import OpenDialog, ChangeViewDataDialog,\
     PreprocessingSelectionDialog, ChangeColormapDialog, OpenXVGDialog,\
@@ -64,7 +64,7 @@ from dialogs import OpenDialog, ChangeViewDataDialog,\
 
 slider_style = """
 QSlider {{
-    margin:{_margin}px; 
+    margin:{_margin}px;
 }}
 QSlider::groove:horizontal {{
     border-radius: {_bg_radius}px;
@@ -85,7 +85,7 @@ QSlider::handle:horizontal {{
     background-color: {_handle_color};
 }}
 QSlider::handle:horizontal:hover {{
-    background-color: {_handle_color_hover}; 
+    background-color: {_handle_color_hover};
 }}
 QSlider::handle:horizontal:pressed {{
     background-color: {_handle_color_pressed};
@@ -130,7 +130,7 @@ class MainSlider(QSlider):
             _handle_radius=handle_radius,
             _handle_color=handle_color,
             _handle_color_hover=handle_color_hover,
-            _handle_color_pressed=handle_color_pressed            
+            _handle_color_pressed=handle_color_pressed
             )
         self.setStyleSheet(adjust_style)
 
@@ -145,7 +145,7 @@ class DocumentationWindow(QWidget):
     """
     def __init__(self, parent):
         super().__init__()
-        self.parent = parent 
+        self.parent = parent
         self.setWindowTitle('MeTrEx')
         self.setMinimumSize(340, 300) # w, h
 
@@ -156,7 +156,7 @@ class DocumentationWindow(QWidget):
 
 
 class SubWindow(QWidget):
-    """SubWindow class shows given data and emits signals when values 
+    """SubWindow class shows given data and emits signals when values
     change.
 
     Parameters:
@@ -177,7 +177,7 @@ class SubWindow(QWidget):
         Update view, information panel and jump_to spin box while the
         slider is moved.
     sliderChangedFinished():
-        Update view, information panel and jump_to spin box after the 
+        Update view, information panel and jump_to spin box after the
         slider has been moved.
     setInformation():
         Populate the information panel.
@@ -342,7 +342,7 @@ class SubWindow(QWidget):
         """Update the shown data view, info panel and jump_to QSpinBox
         according to the sliders position when it was released.
        
-        This function is particularly useful for large data, when a 
+        This function is particularly useful for large data, when a
         continuous update of the view becomes too slow.
         """
         s = self.sender().value()
@@ -378,7 +378,7 @@ class SubWindow(QWidget):
     def setSettings(self):
         """Setup settings grid for this view.
         This includes: change color, change name, save and hide sphere
-        buttons. 
+        buttons.
         """
         self.settings_groupbox = QGroupBox('Settings & Options')
         self.settings_groupbox.setAccessibleName('settings')
@@ -406,7 +406,7 @@ class SubWindow(QWidget):
 
     def changeColor(self):
         """Change the color of a single data set."""
-        current_names = {}   
+        current_names = {}
         for name, ps in self.data.pointsets.items():
             current_names[ps.selection_string] = ''
         n = 30
@@ -457,27 +457,27 @@ class SubWindow(QWidget):
                 reference.remove()
             self.sc.draw()
             self.show_spheres = False
-        else: 
+        else:
             self.show_hide_sphere.setText('Hide Sphere')
             self.show_spheres = True
             if self.sc.dim == '3d':
                 for name, ds in self.sc.data.pointsets.items():
                     self.sc.spheres[ds.selection_string] = self.sc.ax.scatter(
-                        ds.x[self.slider_position-1], 
-                        ds.y[self.slider_position-1], 
-                        ds.z[self.slider_position-1], 
-                        color='fuchsia', 
+                        ds.x[self.slider_position-1],
+                        ds.y[self.slider_position-1],
+                        ds.z[self.slider_position-1],
+                        color='fuchsia',
                         s=80
                         )
             elif self.sc.dim == '2d':
                 for name, ds in self.sc.data.pointsets.items():
                     self.sc.spheres[ds.selection_string] = self.sc.ax.scatter(
-                        ds.x[self.slider_position-1], 
-                        ds.y[self.slider_position-1], 
-                        color='fuchsia', 
+                        ds.x[self.slider_position-1],
+                        ds.y[self.slider_position-1],
+                        color='fuchsia',
                         s=80
                         )
-            else: 
+            else:
                 return
             self.sc.draw()
 
@@ -514,7 +514,7 @@ class BottomView(QWidget):
         self.parent = parent
         self.setContentsMargins(0,0,0,0)
         self.layout = QHBoxLayout()
-        self.layout.setObjectName(name) 
+        self.layout.setObjectName(name)
         self.layout.setContentsMargins(0,0,0,0)
         self.name = name
         self.data = data
@@ -535,15 +535,15 @@ class BottomView(QWidget):
         info_panel_name = self.data.analysis + ' ' + self.data.unit
         self.information_panel_groupbox = QGroupBox(info_panel_name) # self.data.analysis
         self.information_panel_groupbox.setAccessibleName(self.name)
-        self.information_panel_groupbox.setFixedWidth(240) 
+        self.information_panel_groupbox.setFixedWidth(240)
 
         self.control_panel_groupbox = QGroupBox('Controls')
         self.control_panel_groupbox.setAccessibleName(self.name)
         self.control_panel_groupbox.setMaximumWidth(60)
         controls_layout = QVBoxLayout()
         jump_to = QSpinBox()
-        jump_to.setAccessibleName('jump_to') 
-        jump_to.setRange(1, self.data.slider_range[1]) 
+        jump_to.setAccessibleName('jump_to')
+        jump_to.setRange(1, self.data.slider_range[1])
         jump_to.setValue(1)
         jump_to.setSingleStep(10)
         jump_to.editingFinished.connect(self.updateVLine)
@@ -581,7 +581,7 @@ class BottomView(QWidget):
             for element in self.info_panel_current_values:
                 element[0].setText(str('{:.2f}'.format(element[1][self.data.slider_range[1]-1])))
                 element[2].setText(str(self.data.slider_range[1]))
-        else: 
+        else:
             for element in self.info_panel_current_values:
                 element[0].setText(str('{:.2f}'.format(element[1][pos-1])))
                 element[2].setText(str(pos))
@@ -602,7 +602,7 @@ class BottomView(QWidget):
         # Font to highlight grid values
         font_highlight_grid = QFont()
         font_highlight_grid.setBold(True)
-        # PUT ALL VALUES IN A SCROLL AREA 
+        # PUT ALL VALUES IN A SCROLL AREA
         values_grid_wrapper = QWidget()
         values_grid_scroll = QScrollArea()
         values_grid_scroll.setFrameShape(QFrame.Shape.NoFrame)
@@ -669,10 +669,10 @@ class BottomView(QWidget):
         
         Parameter:
         -----
-        s (bool): 
+        s (bool):
             When checked: True = hide sphere, otherwise show sphere.
         """
-        if s: 
+        if s:
             self.view.label_min.remove()
             self.view.label_max.remove()
             self.view.draw()
@@ -726,7 +726,7 @@ class BottomView(QWidget):
                     writer.writerow(line)
 
     def updateVLine(self):
-        """Update the vertical line in the view (slider, vline) and 
+        """Update the vertical line in the view (slider, vline) and
         information panel.
         """
         sender = self.sender()
@@ -760,10 +760,10 @@ class BottomView(QWidget):
                     b = color[2]*255
                     self.id_label.setStyleSheet('background-color: rgb('+str(r)+','+str(g)+','+str(b)+')')
             except: # no such line in plot
-                pass 
+                pass
         
 
-class BottomViewGroup(QScrollArea): 
+class BottomViewGroup(QScrollArea):
     """Holds all BottomView objects.
     
     Parameters
@@ -807,10 +807,10 @@ class BottomViewGroup(QScrollArea):
         sender = self.sender()
         name = sender.accessibleName()
         reply = QMessageBox.question(
-            self, 
-            'Remove analysis', 
-            'Are you sure you want to remove this analysis?', 
-            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No, 
+            self,
+            'Remove analysis',
+            'Are you sure you want to remove this analysis?',
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
             QMessageBox.StandardButton.Yes
             )
         if reply == QMessageBox.StandardButton.Yes:
@@ -827,7 +827,7 @@ class BottomViewGroup(QScrollArea):
                         child.setHidden(True)
                 else:
                     self.setMinimumSize(720, 180*i)
-        else: 
+        else:
             sender.setChecked(False)
 
  
@@ -838,7 +838,7 @@ class MainWindow(QMainWindow):
     Parameter:
     ------
     sliderChanged (pyqtSignal):
-        Signal emitted when the sliders are changed. 
+        Signal emitted when the sliders are changed.
 
     Methods:
     ------
@@ -849,7 +849,7 @@ class MainWindow(QMainWindow):
         Show an animation of the data in the main view.
     setOverviewLayout():
         Populate the information and settings panel at the right side
-        of the main view. 
+        of the main view.
     updateCurrentData():
         Update the values shown in the information panel.
     updateView():
@@ -861,7 +861,7 @@ class MainWindow(QMainWindow):
     updatePolynom():
         Recalculate the surface abstraction.
     changeMembraneRepresentation():
-        Change the membrane representation from a simple plain to 
+        Change the membrane representation from a simple plain to
         a triangulated surface and back.
     setFrame():
         Change the slider position and update the view.
@@ -870,7 +870,7 @@ class MainWindow(QMainWindow):
     updateBottomViewSliders():
         Update the position of the sliders in the BottomViews.
     sliderChangedMembrane():
-        Update the membrane state in the main view according to the 
+        Update the membrane state in the main view according to the
         slider position.
     showHideMolecule():
         Show or hide a trajectory in the main view.
@@ -886,15 +886,15 @@ class MainWindow(QMainWindow):
     changeColorBottomViews():
         Update the color code in the BottomViews.
     redraw():
-        Update shperes and leaflets in the main view. 
+        Update shperes and leaflets in the main view.
     redrawShowHideMapping():
-        Update elements of the main view when a mapping is shown. 
+        Update elements of the main view when a mapping is shown.
     redrawShowHide():
         Update the view when a trajectory shall be shown / hidden.
     redrawColor():
         Update color of trajectory line.
     addSubWindow():
-        Show a new Window. 
+        Show a new Window.
     closeEvent():
         Close all windows shown when the application is exited.
     """
@@ -910,7 +910,7 @@ class MainWindow(QMainWindow):
         self.size_analysis_unit_label = 80
 
         # WINDOW VARIABLES
-        self.data = Data() 
+        self.data = Data()
         self.slider_position_molecules = 0
         self.slider_position_membrane = 0
         self.sliders_linked = True
@@ -1080,7 +1080,7 @@ class MainWindow(QMainWindow):
         self.show_animation = s
         pixmap_media_pause = QStyle.StandardPixmap.SP_MediaPause
         animation_icon_pause = self.style().standardIcon(pixmap_media_pause)
-        QCoreApplication.processEvents() # 
+        QCoreApplication.processEvents() #
         if s:
             self.sliders_linked = True
             self.connect_sliders.setChecked(True)
@@ -1147,11 +1147,11 @@ class MainWindow(QMainWindow):
 
         # STATIC INFO
         shown_frames_layout = QVBoxLayout()
-        self.shown_frames = QLabel('{:,}'.format(self.data.max_frame+1).replace(',',' ')+' frames shown') 
+        self.shown_frames = QLabel('{:,}'.format(self.data.max_frame+1).replace(',',' ')+' frames shown')
         total_frames = QLabel('{:,}'.format(self.data.original_frame_number).replace(',',' ')+' frames total')
         frames_skipped = QLabel(str(self.data.n)+' frame(s) skipped')
-        atoms = QLabel('{:,}'.format(self.data.n_atoms).replace(',',' ')+' atoms')  
-        molecules = QLabel('{:,}'.format(len(self.data.distinct_molecules)).replace(',',' ')+' molecules') 
+        atoms = QLabel('{:,}'.format(self.data.n_atoms).replace(',',' ')+' atoms')
+        molecules = QLabel('{:,}'.format(len(self.data.distinct_molecules)).replace(',',' ')+' molecules')
         if self.data.max_frame == 0:
             total_frames.setToolTip('This value might not be correct.\nMaybe youre selection of \'k\' or \'n\' in the preprocessing step\nwas not appropriate for your data.')
             frames_skipped.setToolTip('This value might not be correct.\nMaybe youre selection of \'k\' or \'n\' in the preprocessing step\nwas not appropriate for your data.')
@@ -1175,18 +1175,18 @@ class MainWindow(QMainWindow):
     def updateCurrentData(self):
         """Update the overview panel showing the current frame number, etc.."""
         if self.show_selection:
-            offset = self.selection_from - 1 
+            offset = self.selection_from - 1
         else:
             offset = 0
         self.time_label.setText('{:,}'.format(self.data.timesteps_mainview[self.slider_position_molecules]).replace(',',' '))
         self.frame_label.setText(str(self.slider_position_molecules+1+offset)) # from 1 to n+1
-        self.time_label_membrane.setText('{:,}'.format(self.data.timesteps_mainview[self.slider_position_membrane]).replace(',',' ')) 
+        self.time_label_membrane.setText('{:,}'.format(self.data.timesteps_mainview[self.slider_position_membrane]).replace(',',' '))
         self.frame_label_membrane.setText(str(self.slider_position_membrane+1+offset)) # from 1 to n+1
 
     def updateView(self):
         """Setup/update the main view according to self.data and self.sliderPosition"""
         if self.data.top is not None:
-            if len(self.data.distinct_molecule_types) == 0: 
+            if len(self.data.distinct_molecule_types) == 0:
                 pass
             else:
                 self.data.generateView()
@@ -1208,7 +1208,7 @@ class MainWindow(QMainWindow):
                 self.setOverviewLayout()
                 self.controlButtons()
             self.redrawMainView()
-        else: 
+        else:
             pass
 
     def controlButtons(self):
@@ -1317,7 +1317,7 @@ class MainWindow(QMainWindow):
             font_brightness = int(sqrt(0.299*_color_r**2 + 0.587*_color_g**2 + 0.144*_color_b**2).real)
             if font_brightness < 128:
                 button.setStyleSheet('background-color: rgb('+str(_color_r)+','+str(_color_g)+','+str(_color_b)+'); color: white;')
-            else: 
+            else:
                 button.setStyleSheet('background-color: rgb('+str(_color_r)+','+str(_color_g)+','+str(_color_b)+'); color: black;')
             button.clicked.connect(self.showHideMolecule)
             self.show_hide_layout.addWidget(button, i, 0, Qt.AlignmentFlag.AlignLeft)
@@ -1368,7 +1368,7 @@ class MainWindow(QMainWindow):
         color.exec()
         if len(color.colormap) == 0:
             return
-        else: 
+        else:
             # set new color map
             self.data.changeColormap(color.colormap)
             # changes color for line representation molecules in main view
@@ -1387,19 +1387,19 @@ class MainWindow(QMainWindow):
                         font_brightness = int(sqrt(0.299*_color_r**2 + 0.587*_color_g**2 + 0.144*_color_b**2).real)
                         if font_brightness < 128:
                             button.setStyleSheet('background-color: rgb('+str(_color_r)+','+str(_color_g)+','+str(_color_b)+'); color: white;')
-                        else: 
+                        else:
                             button.setStyleSheet('background-color: rgb('+str(_color_r)+','+str(_color_g)+','+str(_color_b)+'); color: black;')
 
     def updatePolynom(self):
         """Update the polynom for the abstract membrane representation."""
         reply = QMessageBox.question(
-            self, 
-            'Change Membrane Abstraction', 
+            self,
+            'Change Membrane Abstraction',
             'Are you sure you want to recalculate the membrane abstraction?\n\n'+\
                 'Depending on the chosen polynom, the percentage of membrane\n'+\
                 'expansion, the numer of lipid molecules and the number of frames\n'+\
-                'this might take some time to compute.', 
-            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No, 
+                'this might take some time to compute.',
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
             QMessageBox.StandardButton.Yes
             )
         if reply == QMessageBox.StandardButton.Yes:
@@ -1410,10 +1410,10 @@ class MainWindow(QMainWindow):
                     extension = child.value()
             if self.data.polynomial == polynom and self.data.membrane_extension == extension:
                 QMessageBox.information(
-                    self, 
-                    'Calculation Finished', 
-                    'You did not specify new values.\nNo calculation needed.', 
-                    QMessageBox.StandardButton.Ok, 
+                    self,
+                    'Calculation Finished',
+                    'You did not specify new values.\nNo calculation needed.',
+                    QMessageBox.StandardButton.Ok,
                     QMessageBox.StandardButton.Ok
                     )
                 return
@@ -1427,10 +1427,10 @@ class MainWindow(QMainWindow):
                 self.polynom_current.setText(str(polynom))
                 self.membrane_extension_current.setText(str(extension) + ' %')
                 QMessageBox.information(
-                    self, 
-                    'Calculation Finished', 
-                    'The membrane surface has been recalculated.', 
-                    QMessageBox.StandardButton.Ok, 
+                    self,
+                    'Calculation Finished',
+                    'The membrane surface has been recalculated.',
+                    QMessageBox.StandardButton.Ok,
                     QMessageBox.StandardButton.Ok
                     )
         else:
@@ -1438,11 +1438,11 @@ class MainWindow(QMainWindow):
 
     def changeMembraneRepresenation(self, checked):
         """Change the membrane represenation and update plot."""
-        if checked: 
+        if checked:
             self.sender().setText('Membrane abstraction')
             self.data.lipid_molecules_show_abstraction = False
             self.redraw()
-        else: 
+        else:
             self.sender().setText('Membrane original')
             self.data.lipid_molecules_show_abstraction = True
             self.redraw()
@@ -1483,7 +1483,7 @@ class MainWindow(QMainWindow):
             self.set_frame.setValue(s+1)
 
     def updateBottomViewSliders(self):
-        """Sets the current slider position value to all QSpinBox 
+        """Sets the current slider position value to all QSpinBox
         objects and emits a editingFinished signal.
         """
         if self.show_selection:
@@ -1548,16 +1548,16 @@ class MainWindow(QMainWindow):
                 i.setParent(None)
     
     def redrawMainView(self):
-        """This function clears and redraws the main view without any 
-        mapping. The main view will look the same like when drawn for 
+        """This function clears and redraws the main view without any
+        mapping. The main view will look the same like when drawn for
         the first time with the given data.
         """
         self.toolbar.update()
         self.sc.ax.cla()
         self.sc.updateView(
-            False, 
-            positionMolecules=self.slider_position_molecules, 
-            positionMembrane=self.slider_position_membrane, 
+            False,
+            positionMolecules=self.slider_position_molecules,
+            positionMembrane=self.slider_position_membrane,
             data=self.data
             )
         self.sc.draw()
@@ -1565,7 +1565,7 @@ class MainWindow(QMainWindow):
     
     # access self.sc directly
     def changeColorBottomViews(self, name, color):
-        """Change the color of the identification label and plotted 
+        """Change the color of the identification label and plotted
         line in the bottom views by calling the changeColor funciton
         of the BottomViews.
 
@@ -1577,13 +1577,13 @@ class MainWindow(QMainWindow):
             molecules.
         color ():
             The new color.
-        """ 
-        try: 
+        """
+        try:
             for bv, reference in self.additional_data_view.bottom_views.items():
                 d = {}
                 d[name] = color
                 reference.changeColor(d)
-        except: 
+        except:
             # There were no BottomViews.
             return
     
@@ -1597,10 +1597,10 @@ class MainWindow(QMainWindow):
             zpos = positions[:,2]
             reference.remove()
             self.sc.spheres[sphere] = self.sc.ax.scatter(
-                xpos[self.slider_position_molecules], 
-                ypos[self.slider_position_molecules], 
-                zpos[self.slider_position_molecules], 
-                color='fuchsia', 
+                xpos[self.slider_position_molecules],
+                ypos[self.slider_position_molecules],
+                zpos[self.slider_position_molecules],
+                color='fuchsia',
                 s=50
                 )
         for leaflet, reference in self.sc.leaflets.items():
@@ -1610,24 +1610,24 @@ class MainWindow(QMainWindow):
                 if self.data.lipid_molecules_show_abstraction:
                     self.sc.leaflets[leaflet] = self.sc.ax.plot_surface(
                         self.data.lipid_molecules_surface[leaflet][self.slider_position_membrane][0],
-                        self.data.lipid_molecules_surface[leaflet][self.slider_position_membrane][1], 
-                        self.data.lipid_molecules_surface[leaflet][self.slider_position_membrane][2], 
-                        color=col, 
-                        antialiased=True, 
+                        self.data.lipid_molecules_surface[leaflet][self.slider_position_membrane][1],
+                        self.data.lipid_molecules_surface[leaflet][self.slider_position_membrane][2],
+                        color=col,
+                        antialiased=True,
                         alpha=0.2
                         )
-                else: 
+                else:
                     self.sc.leaflets[leaflet] = self.sc.ax.plot_trisurf(
-                        self.data.lipid_molecules_positions[leaflet][self.slider_position_membrane][:,0], 
-                        self.data.lipid_molecules_positions[leaflet][self.slider_position_membrane][:,1], 
-                        self.data.lipid_molecules_positions[leaflet][self.slider_position_membrane][:,2], 
-                        color=col, 
-                        linewidth=0.2, 
-                        antialiased=True, 
-                        alpha=0.2, 
+                        self.data.lipid_molecules_positions[leaflet][self.slider_position_membrane][:,0],
+                        self.data.lipid_molecules_positions[leaflet][self.slider_position_membrane][:,1],
+                        self.data.lipid_molecules_positions[leaflet][self.slider_position_membrane][:,2],
+                        color=col,
+                        linewidth=0.2,
+                        antialiased=True,
+                        alpha=0.2,
                         edgecolor='grey'
                         )
-            except: 
+            except:
                 pass
         self.sc.draw()
     
@@ -1637,7 +1637,7 @@ class MainWindow(QMainWindow):
         is applied.
         """
         # setup NaN values for the line to skip, if any
-        hide = np.empty((1, 2, 3)) 
+        hide = np.empty((1, 2, 3))
         hide[:] = np.NaN
 
         # keep original, but only if not existing jet
@@ -1646,8 +1646,8 @@ class MainWindow(QMainWindow):
         else:
             self.data.drug_molecules_mseg = deepcopy(self.data.drug_molecules_mseg_original)
 
-        # remove all elements not needed from the view 
-        # (spheres, labels, markers from extremes, colorbar, 
+        # remove all elements not needed from the view
+        # (spheres, labels, markers from extremes, colorbar,
         # line collection)
         for sphere, reference in self.sc.spheres.items():
             reference.remove()
@@ -1662,11 +1662,11 @@ class MainWindow(QMainWindow):
                 #refs[0][1].remove()
                 refs[1][0].remove()
                 #refs[1][1].remove()
-            except: 
+            except:
                 # no labels in this view
                 pass
         self.sc.extreme_labels = {}
-        # colorbar needs to be removed because it refers to data that 
+        # colorbar needs to be removed because it refers to data that
         # will change by this function
         self.sc.colorbar.remove()
         self.sc.linecoll.remove()
@@ -1689,10 +1689,10 @@ class MainWindow(QMainWindow):
                 zpos = positions[:,2]
                 self.sc.line_labels[mol] = self.sc.ax.text(xpos[0], ypos[0], zpos[0], mol, None)
                 self.sc.spheres[mol] = self.sc.ax.scatter(
-                    xpos[self.slider_position_molecules], 
-                    ypos[self.slider_position_molecules], 
-                    zpos[self.slider_position_molecules], 
-                    color='fuchsia', 
+                    xpos[self.slider_position_molecules],
+                    ypos[self.slider_position_molecules],
+                    zpos[self.slider_position_molecules],
+                    color='fuchsia',
                     s=50
                     )
                 self.sc.extreme_labels[mol] = []
@@ -1721,14 +1721,14 @@ class MainWindow(QMainWindow):
                         #self.sc.extreme_labels[mol].append([label, marker])
                         self.sc.extreme_labels[mol].append([marker])
                         j += 1
-                except: 
+                except:
                     # no extreme values available (e.g. map position)
                     pass
         self.data.drug_molecules_linecol = Line3DCollection(self.data.drug_molecules_mseg, cmap=plt.get_cmap('viridis')) # TODO: chekc if color is shown correctly
         # lines will be colored according to set_array
         self.data.drug_molecules_linecol.set_array(self.data.drug_molecules_mvalues)
         self.sc.linecoll = self.sc.ax.add_collection3d(self.data.drug_molecules_linecol)
-        self.sc.colorbar = self.sc.fig.colorbar(self.sc.linecoll, ax=self.sc.ax, shrink=0.7, pad=0.13, label=self.data.drug_molecules_mlabel) 
+        self.sc.colorbar = self.sc.fig.colorbar(self.sc.linecoll, ax=self.sc.ax, shrink=0.7, pad=0.13, label=self.data.drug_molecules_mlabel)
 
         # update plot
         self.sc.draw()
@@ -1759,10 +1759,10 @@ class MainWindow(QMainWindow):
                     text = self.sc.ax.text(xpos[0], ypos[0], zpos[0], molecule, None)
                     self.sc.lines[molecule] = [line, text]
                     self.sc.spheres[molecule] = self.sc.ax.scatter(
-                        xpos[self.slider_position_molecules], 
-                        ypos[self.slider_position_molecules], 
-                        zpos[self.slider_position_molecules], 
-                        color='fuchsia', 
+                        xpos[self.slider_position_molecules],
+                        ypos[self.slider_position_molecules],
+                        zpos[self.slider_position_molecules],
+                        color='fuchsia',
                         s=50
                         )
                 except: # there are molecules without position information
@@ -1782,22 +1782,22 @@ class MainWindow(QMainWindow):
                 col = self.data.leaflet_colors[leaflet]
                 if self.data.lipid_molecules_show_abstraction:
                     self.sc.leaflets[leaflet] = self.sc.ax.plot_surface(
-                        self.data.lipid_molecules_surface[leaflet][self.slider_position_membrane][0], 
-                        self.data.lipid_molecules_surface[leaflet][self.slider_position_membrane][1], 
-                        self.data.lipid_molecules_surface[leaflet][self.slider_position_membrane][2], 
-                        color=col, 
-                        antialiased=True, 
+                        self.data.lipid_molecules_surface[leaflet][self.slider_position_membrane][0],
+                        self.data.lipid_molecules_surface[leaflet][self.slider_position_membrane][1],
+                        self.data.lipid_molecules_surface[leaflet][self.slider_position_membrane][2],
+                        color=col,
+                        antialiased=True,
                         alpha=0.2
                         )
-                else: 
+                else:
                     self.sc.leaflets[leaflet] = self.sc.ax.plot_trisurf(
-                        self.data.lipid_molecules_positions[leaflet][self.slider_position_membrane][:,0], 
-                        self.data.lipid_molecules_positions[leaflet][self.slider_position_membrane][:,1], 
-                        self.data.lipid_molecules_positions[leaflet][self.slider_position_membrane][:,2], 
-                        color=col, 
-                        linewidth=0.2, 
-                        antialiased=True, 
-                        alpha=0.2, 
+                        self.data.lipid_molecules_positions[leaflet][self.slider_position_membrane][:,0],
+                        self.data.lipid_molecules_positions[leaflet][self.slider_position_membrane][:,1],
+                        self.data.lipid_molecules_positions[leaflet][self.slider_position_membrane][:,2],
+                        color=col,
+                        linewidth=0.2,
+                        antialiased=True,
+                        alpha=0.2,
                         edgecolor='grey'
                         )
         self.sc.draw()
@@ -1816,7 +1816,7 @@ class MainWindow(QMainWindow):
         self.sc.draw()
 
     def changeColor(self):
-        """Change color of all objects representing a molecule: 
+        """Change color of all objects representing a molecule:
         line in main view and bottom views and the push button.
         """
         dlg = ChangeColorDialog(self.data.drug_molecules, self.data.color_list, 'Select Molecule')
@@ -1836,21 +1836,21 @@ class MainWindow(QMainWindow):
                     font_brightness = int(sqrt(0.299*_color_r**2 + 0.587*_color_g**2 + 0.144*_color_b**2).real)
                     if font_brightness < 128:
                         button.setStyleSheet('background-color: rgb('+str(_color_r)+','+str(_color_g)+','+str(_color_b)+'); color: white;')
-                    else: 
+                    else:
                         button.setStyleSheet('background-color: rgb('+str(_color_r)+','+str(_color_g)+','+str(_color_b)+'); color: black;')
             # update main view and bottom views
             self.redrawColor()
             self.changeColorBottomViews(dlg.molecule, color)
         except: # no color selected / canceled
-            return 
+            return
 
     def addSubWindow(self, **kwargs):
-        """Initialize a SubWindow, register it in the list of 
-        subwindows and show it. 
+        """Initialize a SubWindow, register it in the list of
+        subwindows and show it.
 
-        Parameters: 
+        Parameters:
         ------
-        optional: 
+        optional:
         title(string): Name of the SubWindow.
         """
         title = 'test'
@@ -1866,10 +1866,10 @@ class MainWindow(QMainWindow):
     def closeEvent(self, event):
         """Ensure closing of the main window is intended."""
         reply = QMessageBox.question(
-            self, 
-            'Close', 
-            'Are you sure you want to close the window?', 
-            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No, 
+            self,
+            'Close',
+            'Are you sure you want to close the window?',
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
             QMessageBox.StandardButton.Yes
             )
         if reply == QMessageBox.StandardButton.Yes:
@@ -1883,7 +1883,7 @@ class MainWindow(QMainWindow):
             event.ignore()
 
 
-class MenuAction(QAction): 
+class MenuAction(QAction):
     """Menu class shows menu actions.
 
     Methods:
@@ -1911,7 +1911,7 @@ class MenuAction(QAction):
     mapSpeed():
         Show a speed calculation on the trajectory lines.
     updateInfoPanelMapping():
-        Update the information panel of the main window when a 
+        Update the information panel of the main window when a
         mapping is shown.
     belowSpeed():
         Show a speed calculation in a BottomView.
@@ -1924,7 +1924,7 @@ class MenuAction(QAction):
     showOKCancelMessageBox:
         Confirmation message box is shown.
     showCautionMessageBox():
-        Warning is shown. 
+        Warning is shown.
     """
 
     def __init__(self, parent, **kwargs):
@@ -1955,7 +1955,7 @@ class MenuAction(QAction):
         dlg.exec()
         if dlg.file_path is None:
             return # rejected, nothing to do
-        else: 
+        else:
             data = analyses.readXVGfile(dlg.file_path)
             dim3 = dlg.dim3
             title = data[0]
@@ -1983,11 +1983,11 @@ class MenuAction(QAction):
             i = 1 # columns start at index 1
             j = 0 # colors start at index 0
             while i < len(columns):
-                # Create data sets and add them to d 
+                # Create data sets and add them to d
                 if len(secondary_y_labels) > 0:
                     try:
                         name = secondary_y_labels[i-1]
-                    except: 
+                    except:
                         name = 'column '+str(i)
                 else:
                     name = 'column '+str(i)
@@ -2019,7 +2019,7 @@ class MenuAction(QAction):
 
     def saveFile(self):
         """Show needed dialogs for the selection of parameters to save a pdb file."""
-        if self.parent.data.top is None: 
+        if self.parent.data.top is None:
             self.showCautionMessageBox()
         else:
             selection_strings = set()
@@ -2029,12 +2029,12 @@ class MenuAction(QAction):
             if self.sender().accessibleName() == 'save_selection':
                 dlg = AnalysisSelectionDialog(
                     'all',
-                    atoms=self.parent.data.atoms, 
+                    atoms=self.parent.data.atoms,
                     atoms_dict=self.parent.data.atoms_dict,
-                    distinct_mol=self.parent.data.distinct_molecules, 
-                    distinct_mol_t=self.parent.data.distinct_molecule_types, 
+                    distinct_mol=self.parent.data.distinct_molecules,
+                    distinct_mol_t=self.parent.data.distinct_molecule_types,
                     drug_mol=self.parent.data.drug_molecules,
-                    universe=self.parent.data.universe, 
+                    universe=self.parent.data.universe,
                     windowtitle='Save Selection',
                     rad=True
                     )
@@ -2043,10 +2043,10 @@ class MenuAction(QAction):
                 if len(selection_strings) == 0:
                     return
                 dlg = ChangeViewDataDialog(
-                    self.parent, 
-                    self.parent.data.min_frame + 1, 
-                    self.parent.data.max_frame + 1, 
-                    current=str(self.parent.slider_position_molecules + 1), 
+                    self.parent,
+                    self.parent.data.min_frame + 1,
+                    self.parent.data.max_frame + 1,
+                    current=str(self.parent.slider_position_molecules + 1),
                     save = True
                     )
                 dlg.exec()
@@ -2088,7 +2088,7 @@ class MenuAction(QAction):
             except:
                 return
 
-    def openFile(self): 
+    def openFile(self):
         """Show open dialogs needed to select file paths and molecules. Update main view."""
         dlg = OpenDialog()
         dlg.exec()
@@ -2119,13 +2119,13 @@ class MenuAction(QAction):
                     + 'Maybe you want to select or skip some frames?\n\n'\
                     + 'Guidline: try a file size containing approimately 1000 frames.'
                 self.showCautionMessageBox(text, QMessageBox.Icon.Critical)
-            else: 
+            else:
                 # file has acceptable size
                 pass
 
             # ask user to specify preprocessing and visualization settings
             do = True
-            while do: 
+            while do:
                 dlg2 = PreprocessingSelectionDialog(molecules=self.parent.data.distinct_molecule_types)
                 dlg2.exec()
                 if dlg2.selected_molecules is None:
@@ -2142,7 +2142,7 @@ class MenuAction(QAction):
                         print('k:' ,self.parent.data.k, 'n:', self.parent.data.n)
                         self.parent.data.reduceFrames()
                         do = False
-                    else: 
+                    else:
                         # k = 1 and n = 0, no preprocessing selected
                         do = False
                 except MemoryError:
@@ -2166,7 +2166,7 @@ class MenuAction(QAction):
             if data_file_size < 10000000:
                 text = 'Calculation time largely depends on the number of\nframes and lipid molecules.\n\nYour data will be shown in less than 3 min, approximately.'
                 self.showCautionMessageBox(text, QMessageBox.Icon.Information)
-            elif data_file_size < 50000000: 
+            elif data_file_size < 50000000:
                 text = 'Calculation time largely depends on the number of\nframes and lipid molecules.\n\nYour data will be shown in about 3 - 7 min.'
                 self.showCautionMessageBox(text, QMessageBox.Icon.Information)
             elif data_file_size < 100000000:
@@ -2176,7 +2176,7 @@ class MenuAction(QAction):
                 text = 'Calculation time largely depends on the number of\nframes and lipid molecules.\n\nUnfortenately, we cannot tell how long\nthe calculations will take for your data.'
                 self.showCautionMessageBox(text, QMessageBox.Icon.Information)
 
-            # reset the MainView if mapping is shown. 
+            # reset the MainView if mapping is shown.
             # (Needed to remove colorbar)
             if self.parent.data.drug_molecules_show_mapping:
                 self.resetView(message=False)
@@ -2185,7 +2185,7 @@ class MenuAction(QAction):
             self.parent.updateView()
 
     def mapPosition(self):
-        """Map the position on the line representation molecules on 
+        """Map the position on the line representation molecules on
         the MainView.
         """
         if self.parent.data.top is None:
@@ -2232,9 +2232,9 @@ class MenuAction(QAction):
             # draw figure to ensure constrained layout can be computed
             self.parent.sc.fig.set_constrained_layout(True)
             self.parent.sc.updateView(
-                True, 
-                positionMolecules=self.parent.slider_position_molecules, 
-                positionMembrane=self.parent.slider_position_membrane, 
+                True,
+                positionMolecules=self.parent.slider_position_molecules,
+                positionMembrane=self.parent.slider_position_membrane,
                 data=self.parent.data
                 )
             self.parent.sc.ax.set_anchor('C')
@@ -2261,10 +2261,10 @@ class MenuAction(QAction):
                 'drug_molecules',
                 intra_all = True,
                 intra=True,
-                atoms=self.parent.data.atoms, 
+                atoms=self.parent.data.atoms,
                 atoms_dict=self.parent.data.atoms_dict,
-                distinct_mol=self.parent.data.distinct_molecules, 
-                distinct_mol_t=self.parent.data.distinct_molecule_types, 
+                distinct_mol=self.parent.data.distinct_molecules,
+                distinct_mol_t=self.parent.data.distinct_molecule_types,
                 drug_mol=self.parent.data.drug_molecules,
                 windowtitle='Distance Selection',
                 universe=self.parent.data.universe
@@ -2323,7 +2323,7 @@ class MenuAction(QAction):
             self.parent.data.drug_molecules_mvalues = distance_all
             self.parent.data.drug_molecules_mlabel = 'distance [$\mathrm{\AA}$]'
             self.parent.data.drug_molecules_morder = molecule_order
-            self.parent.data.extremePos() 
+            self.parent.data.extremePos()
             self.parent.data.drug_molecules_text = extremes
 
             # clear and redraw MainView
@@ -2332,9 +2332,9 @@ class MenuAction(QAction):
             self.parent.sc.fig.canvas.draw()
             self.parent.sc.fig.set_constrained_layout(True)
             self.parent.sc.updateView(
-                True, 
-                positionMolecules=self.parent.slider_position_molecules, 
-                positionMembrane=self.parent.slider_position_membrane, 
+                True,
+                positionMolecules=self.parent.slider_position_molecules,
+                positionMembrane=self.parent.slider_position_membrane,
                 data=self.parent.data
                 )
             self.parent.sc.ax.set_anchor('C')
@@ -2344,14 +2344,14 @@ class MenuAction(QAction):
 
             # Update info panel
             unit_text = '['.encode('utf-8') + u'\u00C5'.encode('utf-8') + ']'.encode('utf-8')
-            unit_text = unit_text.decode('utf-8') 
+            unit_text = unit_text.decode('utf-8')
             unit_text = 'Distance, ' + unit_text
             self.updateInfoPanelMapping(extremes, unit_text)
             self.showCautionMessageBox('Distance mapping has been calculated.', QMessageBox.Icon.Information, 'Information')
 
     def belowDistance(self):
         """ask for atoms / molecules  to calculate distance, set up BottomView"""
-        if self.parent.data.top is None: 
+        if self.parent.data.top is None:
             self.showCautionMessageBox()
         else:
             single_view = True
@@ -2360,10 +2360,10 @@ class MenuAction(QAction):
             dlg = AnalysisSelectionDialog(
                 'all',
                 intra=True,
-                atoms=self.parent.data.atoms, 
+                atoms=self.parent.data.atoms,
                 atoms_dict=self.parent.data.atoms_dict,
-                distinct_mol=self.parent.data.distinct_molecules, 
-                distinct_mol_t=self.parent.data.distinct_molecule_types, 
+                distinct_mol=self.parent.data.distinct_molecules,
+                distinct_mol_t=self.parent.data.distinct_molecule_types,
                 drug_mol=self.parent.data.drug_molecules,
                 windowtitle='Distance Selection',
                 universe=self.parent.data.universe
@@ -2372,7 +2372,7 @@ class MenuAction(QAction):
             selected_molecules = dlg.selected_molecules
             if len(selected_molecules) == 0: # don't do anything, just return
                 return
-            else: 
+            else:
                 self.parent.additional_data_view.setHidden(False) # show bottom view group if not shown already
             # Setup for shared scales
             if not 'distance' in self.parent.bottom_views_scales.keys():
@@ -2395,7 +2395,7 @@ class MenuAction(QAction):
                 mol = selection_list[1]+selection_list[4]
                 if mol in self.parent.data.drug_molecules_colors.keys():
                     color = self.parent.data.drug_molecules_colors[mol]
-                else: 
+                else:
                     cols = returnColors(256, self.parent.data.colormap)
                     if self.parent.data.colormap in colormap.color_map_grey:
                         rand = random.randint(3, 255)
@@ -2416,7 +2416,7 @@ class MenuAction(QAction):
                 colors[molecule] = color
 
             unit_text = '['.encode('utf-8') + u'\u00C5'.encode('utf-8') + ']'.encode('utf-8')
-            unit_text = unit_text.decode('utf-8') 
+            unit_text = unit_text.decode('utf-8')
             unit_mpl='distance [$\mathrm{\AA}$]'
 
             lines = []
@@ -2499,14 +2499,14 @@ class MenuAction(QAction):
                 imin = list(np.where(speeds[molecule] == speeds[molecule].min()))[0]
                 maxval = speeds[molecule].max()
                 imax = list(np.where(speeds[molecule] == speeds[molecule].max()))[0]
-                extremes[molecule] = [imin, minval, imax, maxval]   
+                extremes[molecule] = [imin, minval, imax, maxval]
              
             segments = {}
             molecule_order = []
             speed_all = np.array([])
             seg_all = np.array([]).reshape(0, 2, 3)
             i = 0
-            try: 
+            try:
                 for molecule, positions in self.parent.data.drug_molecules_positions.items():
                     x = positions[:, 0]
                     y = positions[:, 1]
@@ -2529,9 +2529,9 @@ class MenuAction(QAction):
             self.parent.data.drug_molecules_show_mapping = True
             self.parent.data.drug_molecules_mseg = seg_all
             self.parent.data.drug_molecules_mvalues = speed_all
-            self.parent.data.drug_molecules_mlabel = 'speed [nm/ns]' # speed in angrtröm: [$\mathrm{\AA}$/$\mathrm{\mu}$s]'
+            self.parent.data.drug_molecules_mlabel = 'speed [nm/ns]' # speed in angrtrË†m: [$\mathrm{\AA}$/$\mathrm{\mu}$s]'
             self.parent.data.drug_molecules_morder = molecule_order
-            self.parent.data.extremePos() 
+            self.parent.data.extremePos()
             self.parent.data.drug_molecules_text = extremes
 
             # clear and redraw MainView
@@ -2540,9 +2540,9 @@ class MenuAction(QAction):
             self.parent.sc.fig.canvas.draw()
             self.parent.sc.fig.set_constrained_layout(True)
             self.parent.sc.updateView(
-                True, 
-                positionMolecules=self.parent.slider_position_molecules, 
-                positionMembrane=self.parent.slider_position_membrane, 
+                True,
+                positionMolecules=self.parent.slider_position_molecules,
+                positionMembrane=self.parent.slider_position_membrane,
                 data=self.parent.data
                 )
             self.parent.sc.ax.set_anchor('C')
@@ -2587,7 +2587,7 @@ class MenuAction(QAction):
                     text = unit_text
                     child.setText(text)
                     child.setHidden(False)
-                    child.adjustSize() 
+                    child.adjustSize()
                 if child.accessibleName() == 'analysis_min_label':
                     child.setHidden(False)
                 if child.accessibleName() == 'analysis_max_label':
@@ -2595,7 +2595,7 @@ class MenuAction(QAction):
 
     def belowSpeed(self):
         """Calculate everything necessary to show speed information for selected molecules/atoms below the main view."""
-        if self.parent.data.top is None: 
+        if self.parent.data.top is None:
             self.showCautionMessageBox()
         else:
             single_view = True
@@ -2603,10 +2603,10 @@ class MenuAction(QAction):
                 single_view = False
             dlg = AnalysisSelectionDialog(
                 'drug_molecules',
-                atoms=self.parent.data.atoms, 
+                atoms=self.parent.data.atoms,
                 atoms_dict=self.parent.data.atoms_dict,
-                distinct_mol=self.parent.data.distinct_molecules, 
-                distinct_mol_t=self.parent.data.distinct_molecule_types, 
+                distinct_mol=self.parent.data.distinct_molecules,
+                distinct_mol_t=self.parent.data.distinct_molecule_types,
                 drug_mol=self.parent.data.drug_molecules,
                 windowtitle='Speed Selection',
                 universe=self.parent.data.universe
@@ -2615,7 +2615,7 @@ class MenuAction(QAction):
             selected_molecules = dlg.selected_molecules
             if len(selected_molecules) == 0: # don't do anything, just return
                 return
-            else: 
+            else:
                 self.parent.additional_data_view.setHidden(False) # show bottom view group
             # Setup for shared scales
             if not 'speed' in self.parent.bottom_views_scales.keys():
@@ -2651,7 +2651,7 @@ class MenuAction(QAction):
             # Labels etc. for the plot (unit_text for Qt text, unit_mpl for matplotlib plots)
             # [Angstrom / u-meter]
             # unit_text = '['.encode('utf-8') + u'\u00C5'.encode('utf-8') + '/'.encode('utf-8') + u'\u00B5'.encode('utf-8') + 'm]'.encode('utf-8')
-            # unit_text = unit_text.decode('utf-8') 
+            # unit_text = unit_text.decode('utf-8')
             unit_text = '[nm / ns]'
             unit_mpl= 'speed [nm / ns]' # 'speed [$\mathrm{\AA}$/$\mathrm{\mu}$s]'
         
@@ -2685,7 +2685,7 @@ class MenuAction(QAction):
                 data.setData(u=unit_text, u_mpl=unit_mpl, analysis='Speed')
                 for l in lines:
                     data.addLine(l)
-                data.slider_range = (1, len(lines[0].t)) # all lines have same length here 
+                data.slider_range = (1, len(lines[0].t)) # all lines have same length here
                 data.calculateExtremes()
                 y_maxs.append(data.max[1])
                 data.id = 'multipleSpeed'
@@ -2708,7 +2708,7 @@ class MenuAction(QAction):
         
     def changeFrames(self):
         """Show open dialogs needed to change the view settings of the main view."""
-        if self.parent.data.top is None: 
+        if self.parent.data.top is None:
             self.showCautionMessageBox()
         else:
             if self.parent.data.drug_molecules_show_mapping:
@@ -2717,7 +2717,7 @@ class MenuAction(QAction):
             dlg.exec()
             if dlg.from_value is None or dlg.to_value is None:
                 return
-            else: 
+            else:
                 # dlg from and to values are not indices! conversion: - 1
                 self.parent.data.changeSettings(dlg.from_value-1, dlg.to_value-1)
                 self.parent.slider_molecules.setValue(0)
@@ -2745,7 +2745,7 @@ class MenuAction(QAction):
 
     def resetView(self, **kwargs):
         """Reset the view to show original (first) view."""
-        if self.parent.data.top is None: 
+        if self.parent.data.top is None:
             self.showCautionMessageBox('No data loaded so no reset needed.')
         else:
             if self.parent.show_selection:
@@ -2774,24 +2774,24 @@ class MenuAction(QAction):
                     if key == 'message':
                         message = value
                         reset = True
-                if message:    
+                if message:
                     reset = self.showOkCancelMessageBox('Reset', 'Are you sure you want to reset the main view?')
                 if self.parent.data.drug_molecules_show_mapping:
-                    if reset: 
+                    if reset:
                         # reset variables
                         self.parent.data.drug_molecules_show_mapping = False
                         for mol, val in self.parent.data.drug_molecules_show.items():
-                            self.parent.data.drug_molecules_show[mol] = True  
-                        self.parent.data.drug_molecules_mseg = None 
+                            self.parent.data.drug_molecules_show[mol] = True
+                        self.parent.data.drug_molecules_mseg = None
                         self.parent.data.drug_molecules_mseg_original = None
-                        self.parent.data.drug_molecules_linecol = None 
+                        self.parent.data.drug_molecules_linecol = None
                         self.parent.data.drug_molecules_mcmap = 'viridis_r'
-                        self.parent.data.drug_molecules_mvalues = None 
-                        self.parent.data.drug_molecules_moffset = {} 
-                        self.parent.data.drug_molecules_morder = [] 
-                        self.parent.data.drug_molecules_mlabel = '' 
+                        self.parent.data.drug_molecules_mvalues = None
+                        self.parent.data.drug_molecules_moffset = {}
+                        self.parent.data.drug_molecules_morder = []
+                        self.parent.data.drug_molecules_mlabel = ''
                         self.parent.data.drug_molecules_text = {}
-                        self.parent.data.mextreme = [] 
+                        self.parent.data.mextreme = []
                         
                         # reset figure
                         self.parent.sc.colorbar.remove()
@@ -2801,9 +2801,9 @@ class MenuAction(QAction):
                         self.parent.sc.fig.set_constrained_layout(True)
                         self.parent.sc.ax.set_anchor('C')
                         self.parent.sc.updateView(
-                            False, 
-                            positionMolecules=self.parent.slider_position_molecules, 
-                            positionMembrane=self.parent.slider_position_membrane, 
+                            False,
+                            positionMolecules=self.parent.slider_position_molecules,
+                            positionMembrane=self.parent.slider_position_membrane,
                             data=self.parent.data
                             )
                         self.parent.sc.draw()
@@ -2839,20 +2839,20 @@ class MenuAction(QAction):
 
     def savelegendMainView(self):
         """Safe the legend of the main view as an image file."""
-        if self.parent.data.top is None: 
+        if self.parent.data.top is None:
             self.showCautionMessageBox()
-        else: 
-            if self.parent.data.drug_molecules_show_mapping: 
+        else:
+            if self.parent.data.drug_molecules_show_mapping:
                 # legend can be printed with printing function
                 self.showOkCancelMessageBox(
-                    'Save legend of main view', 
+                    'Save legend of main view',
                     'This view has a legend to be saved with the view.\n'
                     + 'You can save the view and all legends via\n'
                     + 'the printing icon above the view.'
                     )
                 return
             else:
-                # inform user, that only currently shown molecules are exported. 
+                # inform user, that only currently shown molecules are exported.
                 all_shown = True
                 any_shown = False
                 for name, val in self.parent.data.drug_molecules_show.items():
@@ -2869,7 +2869,7 @@ class MenuAction(QAction):
                 save = True
                 if not all_shown:
                     save = self.showOkCancelMessageBox(
-                        'Save legend of main view', 
+                        'Save legend of main view',
                         'The legend shows the currently shown\nmolecules of the line representation.'
                         )
                 if save:
@@ -2910,10 +2910,10 @@ class MenuAction(QAction):
     def showOkCancelMessageBox(self, title, message):
         """Show a message box which asks the user for consent."""
         reply = QMessageBox.question(
-            self.parent, 
-            title, 
-            message, 
-            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No, 
+            self.parent,
+            title,
+            message,
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
             QMessageBox.StandardButton.Yes
             )
         if reply == QMessageBox.StandardButton.Yes:
@@ -2922,8 +2922,8 @@ class MenuAction(QAction):
             return False
 
     def showCautionMessageBox(
-            self, 
-            text='You need to select data to be shown first.\n Open files first.', 
+            self,
+            text='You need to select data to be shown first.\n Open files first.',
             icon=QMessageBox.Icon.Warning, title='Caution!'
             ):
         """Show message box informing the user about a warning.
@@ -2943,5 +2943,6 @@ class MenuAction(QAction):
         message_box.setText(text)
         message_box.setIcon(icon)
         message_box.setStandardButtons(QMessageBox.StandardButton.Ok)
-        self.buttonBox = message_box.exec() 
+        self.buttonBox = message_box.exec()
+
 

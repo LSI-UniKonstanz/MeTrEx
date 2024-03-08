@@ -343,7 +343,7 @@ class PreprocessingSelectionDialog(QDialog):
             vis_selection_layout = QVBoxLayout()
             label = QLabel('You need to specify the name of the molecules for the line representation:')
             vis_selection_layout.addWidget(label)
-            for mol in sorted(molecules):
+            for mol in sorted(molecules): #FIX by Beat, added sorting
                 self.checkBtn = QCheckBox(mol)
                 vis_selection_layout.addWidget(self.checkBtn)
             vis_selection_groupbox.setLayout(vis_selection_layout)

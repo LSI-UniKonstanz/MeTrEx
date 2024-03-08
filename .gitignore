@@ -1,4 +1,6 @@
 # Ignore data files
+*.lock
+*.npz
 *.pdb
 *.xtc
 *.xvg
@@ -7,3 +9,4 @@
 
 # Ignore folder
 .ipynb_checkpoints/
+__pycache__/

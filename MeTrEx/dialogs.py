@@ -37,7 +37,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QPalette, QColor, QFont, QIntValidator, QValidator
 from PyQt6.QtWidgets import QLabel, QCheckBox, QDialog, QPushButton,\
     QDialogButtonBox, QVBoxLayout, QHBoxLayout, QLineEdit, QFileDialog, QMessageBox, QGridLayout, QWidget,\
-    QGroupBox, QScrollArea, QSpinBox, QComboBox, QSizePolicy, QFrame,  QFormLayout
+    QGroupBox, QScrollArea, QSpinBox, QComboBox, QSizePolicy, QFrame,  QFormLayout, QListWidget
 from visualisations import SubPlotCanvas
 
 class OpenDialog(QDialog):
@@ -1267,3 +1267,46 @@ class ChangeNameDialog(QDialog):
         """
         self.new_names = None
         self.reject()
+        
+class SelectRepresentationAtom(QDialog):
+    """Open a dialog to select and set the atom for line representation for each molecule.
+    
+    Parameter:
+    ------
+    atom_names (list/set): list of atom names for line representation
+    selected_atom (str or None): The selected atom name. None if no atom is selected.
+
+    Methods:
+    ------
+    initUI():
+        Initialise UI.
+    onItemClicked():
+        Slot method called when an item in the list is clicked.
+    """
+    def __init__(self, atom_names):
+        super().__init__()
+        self.atom_names = sorted(atom_names)
+        self.selected_atom = None
+        self.initUI()
+
+    def initUI(self):
+        layout = QVBoxLayout()
+        
+        instruction_label = QLabel("Please select an atom for line representation:")
+        layout.addWidget(instruction_label)
+        
+        self.list_widget = QListWidget()
+        self.list_widget.addItems(self.atom_names)
+        self.list_widget.itemClicked.connect(self.onItemClicked)
+        layout.addWidget(self.list_widget)
+
+        buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel)
+        buttons.accepted.connect(self.accept)
+        buttons.rejected.connect(self.reject)
+        layout.addWidget(buttons)
+
+        self.setLayout(layout)
+        self.setWindowTitle("Select anker atom")
+
+    def onItemClicked(self, item):
+        self.selected_atom = item.text()

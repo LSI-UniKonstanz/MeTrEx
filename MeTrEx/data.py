@@ -28,6 +28,7 @@ import surface
 import colormap as colm
 from colormap import returnColors
 
+from dialogs import SelectRepresentationAtom
 
 class Data():
     """Data object holds information about the simulation data to be explored.
@@ -364,20 +365,48 @@ class Data():
             for molecule in self.distinct_molecules:
                 if molecule.startswith(molecule_type):
                     self.drug_molecules[molecule] = [molecule_type, molecule[len(molecule_type):]]
+###
+        atoms_dict = dict()
+        for molecule, value in self.drug_molecules.items():
+            atoms_dict[molecule] = self.universe.select_atoms(f'resname {value[0]} and resid {value[1]} and not name H*')
+        atom_names = set([atom.name for atom in atoms_dict[molecule] for molecule in atoms_dict])
+        
+        dlg = SelectRepresentationAtom(atom_names)
+        dlg.exec()
+        anker = dlg.selected_atom
+       
+        print(f'\tselected anker atom: {anker}')
 
         for molecule, value in self.drug_molecules.items():
-            # names for the atoms shown in the line representation are 'C' or 'CA'
-            b = False
             try:
-                self.drug_molecules_reference[molecule] = self.universe.select_atoms('resname ' + value[0] + ' and resid ' + value[1] + ' and name C')
-            except: 
-                b = True
-            if b:
+                self.drug_molecules_reference[molecule] = self.universe.select_atoms(f'resname {value[0]} and resid {value[1]} and name {anker}')
+            except:
+                b = False
                 try:
-                    self.drug_molecules_reference[molecule] = self.universe.select_atoms('resname ' + value[0] + ' and resid ' + value[1] + ' and name CA')
+                    self.drug_molecules_reference[molecule] = self.universe.select_atoms('resname ' + value[0] + ' and resid ' + value[1] + ' and name C')
                 except:
-                    # neither C nor CA were atom names within the line representation moleucles, no lines shown
-                    pass
+                    b = True
+                if b:
+                    try:
+                        self.drug_molecules_reference[molecule] = self.universe.select_atoms('resname ' + value[0] + ' and resid ' + value[1] + ' and name CA')
+                    except:
+                        # neither C nor CA were atom names within the line representation moleucles, no lines shown
+                        print('\t no anker atom for {molecule}')
+                        pass
+    ###
+#        for molecule, value in self.drug_molecules.items():
+#            # names for the atoms shown in the line representation are 'C' or 'CA'
+#            b = False
+#            try:
+#                self.drug_molecules_reference[molecule] = self.universe.select_atoms('resname ' + value[0] + ' and resid ' + value[1] + ' and name C')
+#            except: 
+#                b = True
+#            if b:
+#                try:
+#                    self.drug_molecules_reference[molecule] = self.universe.select_atoms('resname ' + value[0] + ' and resid ' + value[1] + ' and name CA')
+#                except:
+#                    # neither C nor CA were atom names within the line representation moleucles, no lines shown
+#                    pass
 
         n = len(self.drug_molecules_reference)
         if n > 255:

@@ -1292,7 +1292,7 @@ class SelectRepresentationAtom(QDialog):
     def initUI(self):
         layout = QVBoxLayout()
         
-        instruction_label = QLabel("Please select an atom for line representation:")
+        instruction_label = QLabel("Please select an atom (of the selected molecule) for line representation:")
         layout.addWidget(instruction_label)
         
         self.list_widget = QListWidget()

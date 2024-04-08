@@ -38,8 +38,8 @@ import os
 import psutil
 import random
 import csv
-from PyQt6.QtCore import Qt, pyqtSignal, pyqtSlot, QCoreApplication
-from PyQt6.QtGui import QAction, QKeySequence, QFont
+from PyQt6.QtCore import Qt, pyqtSignal, pyqtSlot, QCoreApplication, QSize
+from PyQt6.QtGui import QAction, QKeySequence, QFont, QGuiApplication
 from PyQt6.QtWidgets import QMainWindow, QLabel, QCheckBox, QPushButton,\
     QVBoxLayout, QHBoxLayout, QFileDialog, QMessageBox, QGridLayout,\
     QWidget, QSlider, QGroupBox, QStyle, QScrollArea, QSpinBox,\
@@ -59,7 +59,8 @@ import MDAnalysis as mda
 from visualisations import MainPlotCanvas, SubPlotCanvas
 from dialogs import OpenDialog, ChangeViewDataDialog,\
     PreprocessingSelectionDialog, ChangeColormapDialog, OpenXVGDialog,\
-    AboutDialog, ChangeNameDialog, AnalysisSelectionDialog, ChangeColorDialog
+    AboutDialog, ChangeNameDialog, AnalysisSelectionDialog, ChangeColorDialog, \
+    DocumentationDialog
 
 
 slider_style = """
@@ -904,7 +905,25 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
         # ADJUST APPEARANCE
         self.setWindowTitle('MeTrEx')
-        self.setMinimumSize(800, 725) # w, h
+        
+        # Get the screen geometry
+        screen_geometry = QGuiApplication.primaryScreen().geometry()
+        
+        # Calculate the minimum size based on a percentage of the screen size
+        width_ratio = 0.6
+        height_ratio = 0.75
+        initial_width = screen_geometry.width() * width_ratio
+        initial_height = screen_geometry.height() * height_ratio
+        
+        # Set the minimum size of the main window
+        min_width = 725
+        min_height = 725
+        self.setMinimumSize(min_width, min_height)# w, h
+        
+        # Set the initial size of the main window (larger than the minimum size)
+        if min_width < initial_width and min_height < initial_height:
+            self.resize(initial_width, initial_height)# w, h
+
         # maximal width of the info panel of the main view
         self.size_info_max = 250
         self.size_analysis_unit_label = 80
@@ -1039,7 +1058,7 @@ class MainWindow(QMainWindow):
         below_distance_multiple.setAccessibleName('multiple')
         show_external_xvg = MenuAction(self, name='&Show XY-XVG file', function='self.showExternalXVG')
         about_action = MenuAction(self, name='&About MeTrEx', function='self.showAbout')
-        #help_action = MenuAction(self, name='&Show Documentation', function='self.showDocumentation')
+        help_action = MenuAction(self, name='&Show Documentation', function='self.showDocumentation')
         
 
         menu = self.menuBar()
@@ -1066,7 +1085,7 @@ class MainWindow(QMainWindow):
         m = menu.addMenu('&Analysis')
         m.addAction(show_external_xvg)
         m = menu.addMenu('&Help')
-        #m.addAction(help_action)
+        m.addAction(help_action)
         m.addAction(about_action)
 
     def linkSliders(self, s):
@@ -1217,7 +1236,7 @@ class MainWindow(QMainWindow):
         self.change_settings_groupbox = QGroupBox('Settings')
         self.change_settings_groupbox.setAccessibleName('settings_change_box')
         self.change_settings_groupbox.setMaximumHeight(240)
-        self.change_settings_groupbox.setMinimumWidth(self.size_info_max)
+#        self.change_settings_groupbox.setMinimaimumWidth(self.size_info_max)
         self.change_settings_groupbox.setMaximumWidth(self.size_info_max)
         self.change_settings_layout = QVBoxLayout()
         # CHANGE COLORMAP
@@ -2482,7 +2501,8 @@ class MenuAction(QAction):
 
     def showDocumentation(self):
         """Show a documentation for this program."""
-        pass
+        dlg = DocumentationDialog()
+        dlg.exec()
 
     def showAbout(self):
         """Show the About Dialog."""

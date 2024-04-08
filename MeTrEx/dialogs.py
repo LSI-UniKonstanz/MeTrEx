@@ -583,7 +583,35 @@ class AboutDialog(QDialog):
         layout.addWidget(wrapper)
         layout.addWidget(buttonBox)
 
-
+class DocumentationDialog(QDialog):
+    """Show help for this program."""
+    def __init__(self):
+        super().__init__()
+        self.setFixedSize(250,220)
+        self.setWindowTitle('Documentation')
+        layout = QVBoxLayout()
+        self.setLayout(layout)
+        # Info
+        wrapper = QWidget()
+        wrapper.setStyleSheet('background-color:white;')
+        wrapper_layout = QVBoxLayout()
+        name = QLabel('MeTrEx')
+        version = QLabel('Version 1.0')
+        license_version = QLabel('GPL-3')
+        wrapper.setLayout(wrapper_layout)
+        wrapper_layout.addSpacing(50)
+        wrapper_layout.addWidget(name, 0, Qt.AlignmentFlag.AlignHCenter)
+        wrapper_layout.addWidget(version, 0, Qt.AlignmentFlag.AlignHCenter)
+        wrapper_layout.addWidget(license_version, 0, Qt.AlignmentFlag.AlignHCenter)
+        wrapper_layout.addSpacing(40)
+        # Ok button
+        qbtn = QDialogButtonBox.StandardButton.Ok
+        buttonBox = QDialogButtonBox(qbtn)
+        buttonBox.accepted.connect(self.accept)
+        # assemble layout
+        layout.addWidget(wrapper)
+        layout.addWidget(buttonBox)
+        
 class AnalysisSelectionDialog(QDialog):
     """Selection Dialog for selecting molecule types, single molecules,
     atoms needed for analysis.
@@ -700,7 +728,7 @@ class AnalysisSelectionDialog(QDialog):
         if self.radius: # make sure you cannot select senseless stuff
             self.intra = False
         # populate selection combos an buttons
-        for molecule in reference:
+        for molecule in sorted(reference):
             molecules_layout = QHBoxLayout()
             molecule_type_name = QLabel(molecule)
             if self.resid:

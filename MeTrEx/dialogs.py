@@ -297,6 +297,9 @@ class PreprocessingSelectionDialog(QDialog):
         self.k = 1
         self.selected_molecules = None
         self.nkonly = nkonly
+        self.anker_selection = False
+        self.anker_selection_text = 'select manually'
+
 
         preprocess_groupbox = QGroupBox('Data Reduction')
         wrap_layout = QVBoxLayout()
@@ -347,7 +350,15 @@ class PreprocessingSelectionDialog(QDialog):
                 self.checkBtn = QCheckBox(mol)
                 vis_selection_layout.addWidget(self.checkBtn)
             vis_selection_groupbox.setLayout(vis_selection_layout)
-
+            
+            anker_selection_groupbox = QGroupBox('Anker Atom')
+            anker_selection_layout = QVBoxLayout()
+            anker_label = QLabel('Do you want to manually select an anker atom for the line representation?')
+            anker_selection_layout.addWidget(anker_label)
+            self.checkAnker = QCheckBox(self.anker_selection_text)
+            anker_selection_layout.addWidget(self.checkAnker)
+            anker_selection_groupbox.setLayout(anker_selection_layout)
+            
         qbtn = QDialogButtonBox.StandardButton.Ok
         self.button_box = QDialogButtonBox(qbtn)
         self.button_box.accepted.connect(self.setSelection)
@@ -356,6 +367,7 @@ class PreprocessingSelectionDialog(QDialog):
         layout.addWidget(preprocess_groupbox)
         if not self.nkonly:
             layout.addWidget(vis_selection_groupbox)
+            layout.addWidget(anker_selection_groupbox)
         layout.addWidget(self.button_box)
         self.setLayout(layout)
 
@@ -364,8 +376,11 @@ class PreprocessingSelectionDialog(QDialog):
         self.selected_molecules = set()
         if not self.nkonly:
             for child in self.findChildren(QCheckBox):
-                if child.isChecked() == True:
-                    self.selected_molecules.add(child.text())
+                if child.isChecked() == True: #Check for selection
+                    if child.text() == self.anker_selection_text: #Check if selection is for manual anker selection
+                        self.anker_selection = True
+                    else:
+                        self.selected_molecules.add(child.text())
         for child in self.findChildren(QSpinBox):
             if child.accessibleName() == 'spin_n':
                 self.n = child.value()

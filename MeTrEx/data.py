@@ -92,6 +92,7 @@ class Data():
         # self.distinctMol() -> is called upon opening files
         self.distinct_molecule_types = set() # = name of molecules
         self.distinct_molecules = set() # = name + resid number
+        self.anker_selection = False # selection of representative anker atom for molecules
 
         self.line_representation_molecule_types = set() # this is set as well upon opening a file, redundant, check if neccessary in the end, = name of molecules
         self.plane_representation_molecule_types = set() # = name of lipid molecules
@@ -366,15 +367,21 @@ class Data():
                 if molecule.startswith(molecule_type):
                     self.drug_molecules[molecule] = [molecule_type, molecule[len(molecule_type):]]
 ###
-        atoms_dict = dict()
-        for molecule, value in self.drug_molecules.items():
-            atoms_dict[molecule] = self.universe.select_atoms(f'resname {value[0]} and resid {value[1]} and not name H*')
-        atom_names = set([atom.name for atom in atoms_dict[molecule] for molecule in atoms_dict])
-        
-        dlg = SelectRepresentationAtom(atom_names)
-        dlg.exec()
-        anker = dlg.selected_atom
-       
+        if self.anker_selection == True:
+            atoms_dict = dict()
+            for molecule, value in self.drug_molecules.items():
+                atoms_dict[molecule] = self.universe.select_atoms(f'resname {value[0]} and resid {value[1]} and not name H*')
+            atom_names = set([atom.name for atom in atoms_dict[molecule] for molecule in atoms_dict])
+            
+            dlg = SelectRepresentationAtom(atom_names)
+            dlg.exec()
+            
+            if dlg.selected_atom is None:
+                anker = 'C'
+            else:
+                anker = dlg.selected_atom
+        else:
+            anker = 'C'
         print(f'\tselected anker atom: {anker}')
 
         for molecule, value in self.drug_molecules.items():
@@ -384,11 +391,13 @@ class Data():
                 b = False
                 try:
                     self.drug_molecules_reference[molecule] = self.universe.select_atoms('resname ' + value[0] + ' and resid ' + value[1] + ' and name C')
+                    print(f'\tautomated anker atom: C for {molecule}')
                 except:
                     b = True
                 if b:
                     try:
                         self.drug_molecules_reference[molecule] = self.universe.select_atoms('resname ' + value[0] + ' and resid ' + value[1] + ' and name CA')
+                        print(f'\tautomated anker atom: CA for {molecule}')
                     except:
                         # neither C nor CA were atom names within the line representation moleucles, no lines shown
                         print('\t no anker atom for {molecule}')

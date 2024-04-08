@@ -904,9 +904,9 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
         # ADJUST APPEARANCE
         self.setWindowTitle('MeTrEx')
-        self.setMinimumSize(1000, 910) # w, h
+        self.setMinimumSize(800, 725) # w, h
         # maximal width of the info panel of the main view
-        self.size_info_max = 220
+        self.size_info_max = 250
         self.size_analysis_unit_label = 80
 
         # WINDOW VARIABLES
@@ -1216,7 +1216,8 @@ class MainWindow(QMainWindow):
         # Settings change buttons
         self.change_settings_groupbox = QGroupBox('Settings')
         self.change_settings_groupbox.setAccessibleName('settings_change_box')
-        self.change_settings_groupbox.setMaximumHeight(225)
+        self.change_settings_groupbox.setMaximumHeight(240)
+        self.change_settings_groupbox.setMinimumWidth(self.size_info_max)
         self.change_settings_groupbox.setMaximumWidth(self.size_info_max)
         self.change_settings_layout = QVBoxLayout()
         # CHANGE COLORMAP
@@ -1238,24 +1239,32 @@ class MainWindow(QMainWindow):
         polynom_label = QLabel('Polynomial:')
         polynom_label.setToolTip('Change the polynom of \n the regression function \n which is used to compute \n the abtract membrane surface.')
         polynom_label.setToolTipDuration(5000) # msec!
-        self.polynom_current = QLabel('')
-        self.polynom_current.setText(str(self.data.polynomial))
+        
         self.polynom_spin = QSpinBox()
         self.polynom_spin.setAccessibleName('polynom_change')
         self.polynom_spin.setMinimum(3)
         self.polynom_spin.setMaximum(15)
         self.polynom_spin.setValue(self.data.polynomial)
+        self.polynom_spin.setMinimumSize(50, self.polynom_spin.minimumSizeHint().height())
+        self.polynom_current = QLabel('')
+        self.polynom_current.setText(str(self.data.polynomial))
+        self.polynom_current.setMinimumSize(50, self.polynom_spin.minimumSizeHint().height())
+
         change_polynom_layout.addWidget(self.polynom_current)
         change_polynom_layout.addWidget(self.polynom_spin)
         membrane_extension_layout = QHBoxLayout()
         membrane_extension_label = QLabel('Expansion:')
         membrane_extension_label.setToolTip('Set the expansion of \n the membrane surface in percentage \n to prevent an undesired decline \n of the membrane at its edges.')
-        self.membrane_extension_current = QLabel('' + ' %')
-        self.membrane_extension_current.setText(str(self.data.membrane_extension) + ' %')
+
         self.expansion_spin = QSpinBox()
         self.expansion_spin.setAccessibleName('membrane_expansion')
         self.expansion_spin.setRange(5, 30)
         self.expansion_spin.setValue(self.data.membrane_extension)
+        self.expansion_spin.setMinimumSize(50, self.expansion_spin.minimumSizeHint().height())
+        self.membrane_extension_current = QLabel('' + ' %')
+        self.membrane_extension_current.setText(str(self.data.membrane_extension) + ' %')
+        self.membrane_extension_current.setMinimumSize(50, self.expansion_spin.minimumSizeHint().height())
+
         membrane_extension_layout.addWidget(self.membrane_extension_current)
         membrane_extension_layout.addWidget(self.expansion_spin)
         membrane_changes_layout.addWidget(polynom_label)
@@ -1287,6 +1296,7 @@ class MainWindow(QMainWindow):
         self.show_hide_info_wrapper = QWidget()
         self.show_hide_info_scroll = QScrollArea()
         self.show_hide_info_scroll.setFrameShape(QFrame.Shape.NoFrame)
+        self.show_hide_info_scroll.setMaximumWidth(self.size_info_max)
 
         self.show_hide_layout = QGridLayout()
         self.mapping_unit_label = QLabel('Analysis, Unit')
@@ -2134,6 +2144,7 @@ class MenuAction(QAction):
                     return
                 # set data collected from dialog
                 self.parent.data.line_representation_molecule_types = dlg2.selected_molecules
+                self.parent.data.anker_selection = dlg2.anker_selection
                 self.parent.data.n = dlg2.n
                 self.parent.data.k = dlg2.k
                 try:

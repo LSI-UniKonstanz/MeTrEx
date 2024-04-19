@@ -587,30 +587,42 @@ class DocumentationDialog(QDialog):
     """Show help for this program."""
     def __init__(self):
         super().__init__()
-        self.setFixedSize(250,220)
+        self.setFixedSize(500, 400)  # Adjusted size for better fit
         self.setWindowTitle('Documentation')
+        
         layout = QVBoxLayout()
         self.setLayout(layout)
-        # Info
-        wrapper = QWidget()
-        wrapper.setStyleSheet('background-color:white;')
-        wrapper_layout = QVBoxLayout()
-        name = QLabel('MeTrEx')
-        version = QLabel('Version 1.0')
-        license_version = QLabel('GPL-3')
-        wrapper.setLayout(wrapper_layout)
-        wrapper_layout.addSpacing(50)
-        wrapper_layout.addWidget(name, 0, Qt.AlignmentFlag.AlignHCenter)
-        wrapper_layout.addWidget(version, 0, Qt.AlignmentFlag.AlignHCenter)
-        wrapper_layout.addWidget(license_version, 0, Qt.AlignmentFlag.AlignHCenter)
-        wrapper_layout.addSpacing(40)
+        
+        # Text content
+        text_content = (
+            "MeTrEx - Membrane Trajectory Exploration\n\n"
+            "MeTrEx is a program for the visual exploration of molecular simulation\n"
+            "data from membranes interacting with small molecules. \n"
+            "Its main feature is to show an overview of the molecules' course throughout\n"
+            "the simulation with an abstract visualization of the membrane. This\n"
+            "overview of the data is shown on the 'main view', which is shown as soon\n"
+            "as data is loaded. \n"
+            "Different analyses can be mapped onto the main view. These analyses can\n"
+            "also be shown in separate plots below the main view, in 'bottom views'.\n"
+            "Additionally, you can load other data files in 'sub windows', shown in\n"
+            "'sub plots'. \n"
+            "Sliders and information panels give information about the currently\n"
+            "shown frame. Exporting data is provided for image, csv and xpdb files.\n\n"
+            "LICENCE\n"
+            "MeTrEx can be licensed with 'GPL 3.0 or later'.\n\n"
+            "AUTHOR\n"
+            "© Christiane Rohse"
+        )
+        
+        # Info label
+        info_label = QLabel(text_content)
+        info_label.setWordWrap(True)  # Allow text wrapping
+        layout.addWidget(info_label)
+        
         # Ok button
-        qbtn = QDialogButtonBox.StandardButton.Ok
-        buttonBox = QDialogButtonBox(qbtn)
+        buttonBox = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok)
         buttonBox.accepted.connect(self.accept)
-        # assemble layout
-        layout.addWidget(wrapper)
-        layout.addWidget(buttonBox)
+        layout.addWidget(buttonBox, alignment=Qt.AlignmentFlag.AlignRight)
         
 class AnalysisSelectionDialog(QDialog):
     """Selection Dialog for selecting molecule types, single molecules,

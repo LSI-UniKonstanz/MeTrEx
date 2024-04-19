@@ -2135,6 +2135,7 @@ class MenuAction(QAction):
 
             # collect size of data file, check if fits into memory, inform user about preprocessing
             data_file_size = os.stat(self.parent.data.data).st_size # [Bytes]
+            cpu_info = psutil.cpu_freq().current #CPU freq in MHz
             memory_available = psutil.virtual_memory().available # [Bytes]
             if memory_available < data_file_size:
                 text = 'Your data file is larger than your availbale memory capacitiy.\n\n'\
@@ -2193,13 +2194,13 @@ class MenuAction(QAction):
 
             # show message about calculaiton time depending on file size
             # ranges were set due to test data from one simulation
-            if data_file_size < 10000000:
+            if data_file_size < 1e7:
                 text = 'Calculation time largely depends on the number of\nframes and lipid molecules.\n\nYour data will be shown in less than 3 min, approximately.'
                 self.showCautionMessageBox(text, QMessageBox.Icon.Information)
-            elif data_file_size < 50000000:
+            elif data_file_size < 5e7:
                 text = 'Calculation time largely depends on the number of\nframes and lipid molecules.\n\nYour data will be shown in about 3 - 7 min.'
                 self.showCautionMessageBox(text, QMessageBox.Icon.Information)
-            elif data_file_size < 100000000:
+            elif data_file_size < 1e8:
                 text = 'Calculation time largely depends on the number of\nframes and lipid molecules.\n\nYour data will be shown in about 4 - 10 min.'
                 self.showCautionMessageBox(text, QMessageBox.Icon.Information)
             else:

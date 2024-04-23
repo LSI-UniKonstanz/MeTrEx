@@ -536,11 +536,11 @@ class BottomView(QWidget):
         info_panel_name = self.data.analysis + ' ' + self.data.unit
         self.information_panel_groupbox = QGroupBox(info_panel_name) # self.data.analysis
         self.information_panel_groupbox.setAccessibleName(self.name)
-        self.information_panel_groupbox.setFixedWidth(240)
+        self.information_panel_groupbox.setFixedWidth(250)
 
         self.control_panel_groupbox = QGroupBox('Controls')
         self.control_panel_groupbox.setAccessibleName(self.name)
-        self.control_panel_groupbox.setMaximumWidth(60)
+        self.control_panel_groupbox.setFixedWidth(70)
         controls_layout = QVBoxLayout()
         jump_to = QSpinBox()
         jump_to.setAccessibleName('jump_to')
@@ -923,10 +923,13 @@ class MainWindow(QMainWindow):
         # Set the initial size of the main window (larger than the minimum size)
         if min_width < initial_width and min_height < initial_height:
             self.resize(initial_width, initial_height)# w, h
+        size = self.size()
+        self.width = size.width()  # Get width
+        self.height = size.height()  # Get height
 
         # maximal width of the info panel of the main view
-        self.size_info_max = 250
-        self.size_analysis_unit_label = 80
+        self.size_info_max = 260
+        self.size_analysis_unit_label = 90
 
         # WINDOW VARIABLES
         self.data = Data()
@@ -1088,6 +1091,12 @@ class MainWindow(QMainWindow):
         m.addAction(help_action)
         m.addAction(about_action)
 
+    def get_current_window_size(self):
+        """Get current window size of main window"""
+        size = self.size()  # Get current window size
+        self.width = size.width()  # Get width
+        self.height = size.height()  # Get height
+    
     def linkSliders(self, s):
         """Link and unlink the line representation and membrane sliders."""
         self.sliders_linked = s
@@ -1236,7 +1245,6 @@ class MainWindow(QMainWindow):
         self.change_settings_groupbox = QGroupBox('Settings')
         self.change_settings_groupbox.setAccessibleName('settings_change_box')
         self.change_settings_groupbox.setMaximumHeight(240)
-#        self.change_settings_groupbox.setMinimaimumWidth(self.size_info_max)
         self.change_settings_groupbox.setMaximumWidth(self.size_info_max)
         self.change_settings_layout = QVBoxLayout()
         # CHANGE COLORMAP
@@ -1308,14 +1316,13 @@ class MainWindow(QMainWindow):
         # Show / hide drug molecules and leaflets in main view buttons
         self.show_hide_groupbox = QGroupBox('Disable/Enable Visibility')
         self.show_hide_groupbox.setAccessibleName('show_hide_box')
-        self.show_hide_groupbox.setMaximumWidth(self.size_info_max)
+        self.show_hide_groupbox.setMaximumWidth(self.size_info_max)              ####
         self.show_hide_groupbox.setContentsMargins(0, 7, 0, 0)
 
         self.wrapper_wrapper_layout = QVBoxLayout()
         self.show_hide_info_wrapper = QWidget()
         self.show_hide_info_scroll = QScrollArea()
         self.show_hide_info_scroll.setFrameShape(QFrame.Shape.NoFrame)
-        self.show_hide_info_scroll.setMaximumWidth(self.size_info_max)
 
         self.show_hide_layout = QGridLayout()
         self.mapping_unit_label = QLabel('Analysis, Unit')
@@ -1325,18 +1332,18 @@ class MainWindow(QMainWindow):
         self.show_hide_layout.addWidget(self.mapping_unit_label, 0, 0, Qt.AlignmentFlag.AlignLeft)
         self.mapping_min_label = QLabel('min')
         self.mapping_min_label.setAlignment(Qt.AlignmentFlag.AlignRight)
-        self.mapping_min_label.setMinimumWidth(40)
+        self.mapping_min_label.setMinimumWidth(35)#40
         self.mapping_min_label.setAccessibleName('analysis_min_label')
         self.mapping_min_label.setHidden(False)
         self.mapping_max_label = QLabel('max')
         self.mapping_max_label.setAlignment(Qt.AlignmentFlag.AlignRight)
-        self.mapping_max_label.setMinimumWidth(40)
+        self.mapping_max_label.setMinimumWidth(35)#40
         self.mapping_max_label.setAccessibleName('analysis_max_label')
         self.mapping_max_label.setHidden(False)
         self.show_hide_layout.addWidget(self.mapping_min_label, 0, 1, Qt.AlignmentFlag.AlignRight)
         self.show_hide_layout.addWidget(self.mapping_max_label, 0, 2, Qt.AlignmentFlag.AlignRight)
         i = 1
-        for key, value in self.data.drug_molecules_colors.items():
+        for key, value in sorted(self.data.drug_molecules_colors.items()):
             button = QPushButton(key)
             button.setCheckable(True)
             button.setAccessibleName('show_hide_pushbutton') # needed to change connection
@@ -2499,6 +2506,9 @@ class MenuAction(QAction):
             for key, value in self.parent.additional_data_view.bottom_views.items():
                 if value.data.analysis == 'Distance':
                     value.view.ax.set_ylim(0, self.parent.bottom_views_scales['distance'][1])
+            self.parent.get_current_window_size()
+            if self.parent.width < 980:
+                self.parent.resize(720+self.parent.size_info_max,self.parent.height)
 
     def showDocumentation(self):
         """Show a documentation for this program."""
@@ -2737,6 +2747,9 @@ class MenuAction(QAction):
             for key, value in self.parent.additional_data_view.bottom_views.items():
                 if value.data.analysis == 'Speed':
                     value.view.ax.set_ylim(0, self.parent.bottom_views_scales['speed'][1])
+            self.parent.get_current_window_size()
+            if self.parent.width < 980:
+                self.parent.resize(720+self.parent.size_info_max,self.parent.height)
         
     def changeFrames(self):
         """Show open dialogs needed to change the view settings of the main view."""

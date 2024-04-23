@@ -34,7 +34,7 @@ __author__ = 'Christiane Rohse'
 
 import os
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QPalette, QColor, QFont, QIntValidator, QValidator
+from PyQt6.QtGui import QPalette, QColor, QFont, QIntValidator, QValidator, QIcon
 from PyQt6.QtWidgets import QLabel, QCheckBox, QDialog, QPushButton,\
     QDialogButtonBox, QVBoxLayout, QHBoxLayout, QLineEdit, QFileDialog, QMessageBox, QGridLayout, QWidget,\
     QGroupBox, QScrollArea, QSpinBox, QComboBox, QSizePolicy, QFrame,  QFormLayout, QListWidget
@@ -553,76 +553,146 @@ class OpenXVGDialog(QDialog):
         self.file_path = None
         self.reject()
 
-
 class AboutDialog(QDialog):
-    """Show information about this program."""
+    """Dialog to display information about the program."""
+
     def __init__(self):
         super().__init__()
-        self.setFixedSize(250,220)
         self.setWindowTitle('About MeTrEx')
-        layout = QVBoxLayout()
-        self.setLayout(layout)      
-        # Info
-        wrapper = QWidget()
-        wrapper.setStyleSheet('background-color:white;')
-        wrapper_layout = QVBoxLayout()
-        name = QLabel('MeTrEx')
-        version = QLabel('Version 1.0')
-        license_version = QLabel('GPL-3')
-        wrapper.setLayout(wrapper_layout)
+        self.setFixedSize(250, 220)
+
+        self.setup_ui()
+
+    def setup_ui(self):
+        layout = QVBoxLayout(self)
+        self.setLayout(layout)
+
+        # Name, version, and license labels
+        name_label = QLabel('MeTrEx')
+        version_label = QLabel('Version 1.0')
+#        license_label = QLabel('GPL-3')
+        license_label = QLabel()
+        license_label.setPixmap(QIcon.fromTheme("text-x-generic").pixmap(16, 16))
+        license_label.setText('<font color="#0074D9"><b>GPL-3</b></font>')
+#        author_label = QLabel('\u00A9 C. Rohse & B. Ehrmann')
+
+        # Set label alignments
+        for label in (name_label, version_label, license_label):
+            label.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+
+        # Add labels to a wrapper widget
+        wrapper_widget = QWidget()
+        wrapper_layout = QVBoxLayout(wrapper_widget)
         wrapper_layout.addSpacing(50)
-        wrapper_layout.addWidget(name, 0, Qt.AlignmentFlag.AlignHCenter)
-        wrapper_layout.addWidget(version, 0, Qt.AlignmentFlag.AlignHCenter)
-        wrapper_layout.addWidget(license_version, 0, Qt.AlignmentFlag.AlignHCenter)
+        wrapper_layout.addWidget(name_label)
+        wrapper_layout.addWidget(version_label)
+        wrapper_layout.addWidget(license_label)
+#        wrapper_layout.addWidget(author_label)
         wrapper_layout.addSpacing(40)
+
         # Ok button
-        qbtn = QDialogButtonBox.StandardButton.Ok
-        buttonBox = QDialogButtonBox(qbtn)
-        buttonBox.accepted.connect(self.accept)
-        # assemble layout
-        layout.addWidget(wrapper)
-        layout.addWidget(buttonBox)
+        ok_button = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok)
+        ok_button.accepted.connect(self.accept)
+
+        # Add widgets to the main layout
+        layout.addWidget(wrapper_widget)
+        layout.addWidget(ok_button)
+
 
 class DocumentationDialog(QDialog):
-    """Show help for this program."""
+    """Dialog to display program documentation."""
+    
+    # Class variable for text content
+    TEXT_CONTENT = (
+            """
+MeTrEx - Membrane Trajectory Exploration
+
+MeTrEx is a program for the visual exploration of molecular simulation data from membranes interacting with small molecules.
+Its main feature is to show an overview of the molecules' course throughout the simulation with an abstract visualization of the membrane.
+This overview of the data is shown on the 'main view', which is shown as soon as data is loaded.
+Different analyses can be mapped onto the main view. These analyses can also be shown in separate plots below the main view, in 'bottom views'.
+Additionally, you can load other data files in 'sub windows', shown in 'sub plots'.
+Sliders and information panels give information about the currently shown frame. Exporting data is provided for image, csv and xpdb files.
+
+USAGE
+Depending on your computer's available memory and processor capabilities, the computation time for the first visualisation differs. It might take a few seconds for small files and up to hours for the larger files. Therefore it might be best to start exploring smaller files first.
+If you reduce the file size as a preprocessing step, the program will save a reduced file as 'reducedData.xtc'.
+For the exploration you can add a mapping, customize your visualizations by choosing different colors or a different colormap. You can also changethe surface abstraction, by changing the calculation properties or don't show an abstraction at all (= use positions of the phosphorus atoms).
+
+1. Open Files:
+Menu > File > Open
+Crtl + O
+Select structure and data file, select preprocessing.
+n = number of frames to skip at the beginning of the data
+k = select every k-th frame to be shown
+Molecule selection: Select the type of molecules that shall represented by its trajectory line.
+Remark:
+If a data reduction is selected, a file 'reducedData.xtc' is stored.
+
+2. Show Analysis Mapping:
+View > Map ...
+
+3. Show Analysis separately:
+View > Show below > ...
+
+4. Open external files:
+Analysis > Show XY-XVG file
+
+5. Save Images:
+accessible via:
+Above the main view: save-icon.
+Right side of the BottomView: save button.
+Right side of the additional windows: save button.
+(When the check box in the analysis-overview-box is activatet also a csv file of the in the overview shown data is saved.)
+The legend of the main view can be saved separately via:
+Menu > File > Save legend
+
+6. Save PDB files:
+Menu > File > Save PDB
+Menu > File > Save selection
+
+7. Interactions:
+Directly with the main view and the visualisations in the additional window.\n
+Additional options are found next to the views.
+
+LICENCE
+MeTrEx can be licensed with 'GPL 3.0 or later'.
+AUTHOR
+© Christiane Rohse & Beat Ehrmann
+            """
+        )
+
     def __init__(self):
         super().__init__()
-        self.setFixedSize(500, 400)  # Adjusted size for better fit
         self.setWindowTitle('Documentation')
-        
-        layout = QVBoxLayout()
+        self.resize(500, 400)  # Adjusted size for better fit
+
+        self.setup_ui()
+
+    def setup_ui(self):
+        layout = QVBoxLayout(self)
         self.setLayout(layout)
-        
-        # Text content
-        text_content = (
-            "MeTrEx - Membrane Trajectory Exploration\n\n"
-            "MeTrEx is a program for the visual exploration of molecular simulation\n"
-            "data from membranes interacting with small molecules. \n"
-            "Its main feature is to show an overview of the molecules' course throughout\n"
-            "the simulation with an abstract visualization of the membrane. This\n"
-            "overview of the data is shown on the 'main view', which is shown as soon\n"
-            "as data is loaded. \n"
-            "Different analyses can be mapped onto the main view. These analyses can\n"
-            "also be shown in separate plots below the main view, in 'bottom views'.\n"
-            "Additionally, you can load other data files in 'sub windows', shown in\n"
-            "'sub plots'. \n"
-            "Sliders and information panels give information about the currently\n"
-            "shown frame. Exporting data is provided for image, csv and xpdb files.\n\n"
-            "LICENCE\n"
-            "MeTrEx can be licensed with 'GPL 3.0 or later'.\n\n"
-            "AUTHOR\n"
-            "© Christiane Rohse"
-        )
-        
+
+        # Scroll area for text content
+        scroll_area = QScrollArea()
+        scroll_area.setWidgetResizable(True)  # Allow the content to resize with the scroll area
+        layout.addWidget(scroll_area)
+
+        # Widget for the text content
+        content_widget = QWidget()
+        scroll_area.setWidget(content_widget)
+        content_layout = QVBoxLayout(content_widget)
+
         # Info label
-        info_label = QLabel(text_content)
+        info_label = QLabel(self.TEXT_CONTENT)
         info_label.setWordWrap(True)  # Allow text wrapping
-        layout.addWidget(info_label)
-        
+        content_layout.addWidget(info_label)
+
         # Ok button
-        buttonBox = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok)
-        buttonBox.accepted.connect(self.accept)
-        layout.addWidget(buttonBox, alignment=Qt.AlignmentFlag.AlignRight)
+        button_box = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok)
+        button_box.accepted.connect(self.accept)
+        layout.addWidget(button_box, alignment=Qt.AlignmentFlag.AlignRight)
+
         
 class AnalysisSelectionDialog(QDialog):
     """Selection Dialog for selecting molecule types, single molecules,

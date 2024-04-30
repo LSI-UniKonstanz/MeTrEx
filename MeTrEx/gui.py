@@ -536,7 +536,9 @@ class BottomView(QWidget):
         info_panel_name = self.data.analysis + ' ' + self.data.unit
         self.information_panel_groupbox = QGroupBox(info_panel_name) # self.data.analysis
         self.information_panel_groupbox.setAccessibleName(self.name)
-        self.information_panel_groupbox.setFixedWidth(250)
+#        self.information_panel_groupbox.setFixedWidth(250)
+        self.information_panel_groupbox.setMinimumWidth(250)
+        self.information_panel_groupbox.setMaximumWidth(300)
 
         self.control_panel_groupbox = QGroupBox('Controls')
         self.control_panel_groupbox.setAccessibleName(self.name)
@@ -802,7 +804,7 @@ class BottomViewGroup(QScrollArea):
         self.bottom_views[view.name] = view
         i = len(self.bottom_views)
         if i < 3:
-            self.setMinimumSize(720, 180*i)
+            self.setMinimumSize(720, 200*i)
 
     def deleteNewView(self):
         sender = self.sender()
@@ -827,7 +829,7 @@ class BottomViewGroup(QScrollArea):
                     for child in self.parent.findChildren(BottomViewGroup):
                         child.setHidden(True)
                 else:
-                    self.setMinimumSize(720, 180*i)
+                    self.setMinimumSize(720, 200*i)
         else:
             sender.setChecked(False)
 
@@ -2198,21 +2200,39 @@ class MenuAction(QAction):
             if self.parent.data.k > 1 or self.parent.data.n > 0:
                 text = 'You reduced the number of frames.\nBe aware that the frames shown are always numbered with\nconsecutive numbers starting from \'1\'!'
                 self.showCautionMessageBox(text, QMessageBox.Icon.Information)
-
+            
+            # Get CPU frequency for speed estimation
+            cpu_freq = psutil.cpu_freq().current + 0.0001
+            # caluclate aproximal read time in seconds
+            read_time = round((data_file_size * 700) / (cpu_freq * 10**6))
+            print(f'Estimated read time: {read_time} seconds')
+ 
+            if read_time < 60:
+                text = 'Calculation time largely depends on the number of\nframes and lipid molecules.\n\nYour data will be shown in less than 1 min, approximately.'
+            else:
+                read_time = round(read_time/60)
+                if read_time < 60:
+                    if read_time < 5:
+                        text = f'Calculation time largely depends on the number of\nframes and lipid molecules.\n\nYour data will be shown in about {read_time} min.'
+                    else:
+                        read_time_min = round(read_time - read_time * 0.1)
+                        read_time_max = round(read_time + read_time * 0.1)
+                        text = f'Calculation time largely depends on the number of\nframes and lipid molecules.\n\nYour data will be shown in about {read_time_min} - {read_time_max} min.'
+                else:
+                    read_time = round(read_time/60)
+                    text = f'Calculation time largely depends on the number of\nframes and lipid molecules.\n\nYour data will be shown in about {read_time} hour/s.'
+            
             # show message about calculaiton time depending on file size
             # ranges were set due to test data from one simulation
-            if data_file_size < 1e7:
-                text = 'Calculation time largely depends on the number of\nframes and lipid molecules.\n\nYour data will be shown in less than 3 min, approximately.'
-                self.showCautionMessageBox(text, QMessageBox.Icon.Information)
-            elif data_file_size < 5e7:
-                text = 'Calculation time largely depends on the number of\nframes and lipid molecules.\n\nYour data will be shown in about 3 - 7 min.'
-                self.showCautionMessageBox(text, QMessageBox.Icon.Information)
-            elif data_file_size < 1e8:
-                text = 'Calculation time largely depends on the number of\nframes and lipid molecules.\n\nYour data will be shown in about 4 - 10 min.'
-                self.showCautionMessageBox(text, QMessageBox.Icon.Information)
-            else:
-                text = 'Calculation time largely depends on the number of\nframes and lipid molecules.\n\nUnfortenately, we cannot tell how long\nthe calculations will take for your data.'
-                self.showCautionMessageBox(text, QMessageBox.Icon.Information)
+#            if data_file_size < 1e7:
+#                text = 'Calculation time largely depends on the number of\nframes and lipid molecules.\n\nYour data will be shown in less than 3 min, approximately.'
+#            elif data_file_size < 5e7:
+#                text = 'Calculation time largely depends on the number of\nframes and lipid molecules.\n\nYour data will be shown in about 3 - 7 min.'
+#            elif data_file_size < 1e8:
+#                text = 'Calculation time largely depends on the number of\nframes and lipid molecules.\n\nYour data will be shown in about 4 - 10 min.'
+#            else:
+#                text = 'Calculation time largely depends on the number of\nframes and lipid molecules.\n\nUnfortenately, we cannot tell how long\nthe calculations will take for your data.'
+            self.showCautionMessageBox(text, QMessageBox.Icon.Information)
 
             # reset the MainView if mapping is shown.
             # (Needed to remove colorbar)

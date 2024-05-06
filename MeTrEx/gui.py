@@ -35,6 +35,7 @@ __author__ = 'Christiane Rohse'
 from cmath import sqrt
 from copy import deepcopy
 import os
+import platform #FIX by Beat to check for MacOS
 import psutil
 import random
 import csv
@@ -2241,6 +2242,9 @@ class MenuAction(QAction):
             # update main window
             self.parent.clearControls()
             self.parent.updateView()
+#FIX by Beat, disables reloead of data after inital loading to avoid crash on MacARM architecture
+            if platform.system() == 'Darwin' and platform.machine() == 'x86_64':
+                self.setEnabled(False)
 
     def mapPosition(self):
         """Map the position on the line representation molecules on

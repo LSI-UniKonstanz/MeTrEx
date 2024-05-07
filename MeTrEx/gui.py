@@ -168,6 +168,8 @@ class SubWindow(QWidget):
 
     Methods:
     -------
+    showAnimation():
+        Show an animation of the data in the sub window.
     linkSliders():
         Update variable to show if sliders are linked.
     updateLinkedSliders():
@@ -208,6 +210,7 @@ class SubWindow(QWidget):
         self.slider_position = 1
         self.sliders_linked = False
         self.show_spheres = True
+        self.show_animation = False
         self.colormap = 'plasma'
 
         for key, value in kwargs.items():
@@ -246,18 +249,29 @@ class SubWindow(QWidget):
         self.slider_to.setFont(from_to_font)
         from_to_layout.addWidget(slider_from, 0, Qt.AlignmentFlag.AlignLeft)
         from_to_layout.addWidget(self.slider_to, 0, Qt.AlignmentFlag.AlignRight)
-        self.link_sliders = QCheckBox('link sliders')
-        self.link_sliders.setToolTip('Link this slider to the main view slider\nif frames match x-axis data.')
-        self.link_sliders.setChecked(False)
-        self.link_sliders.stateChanged.connect(self.linkSliders)
-        self.parent.sliderChanged.connect(self.updateLinkedSliders)
+        
+        # ANIMATION & LINK SLIDERS
+        self.animation_layout = QGridLayout()
+        self.animation_button = QPushButton('')
+        pixmap_media_play = QStyle.StandardPixmap.SP_MediaPlay
+        animation_icon = self.parent.style().standardIcon(pixmap_media_play)
+        self.animation_button.setIcon(animation_icon)
+        self.animation_button.setCheckable(True)
+        self.animation_button.clicked.connect(self.showAnimation)
+#        self.link_sliders = QCheckBox('link sliders')
+#        self.link_sliders.setToolTip('Link this slider to the main view slider\nif frames match x-axis data.')
+#        self.link_sliders.setChecked(False)
+#        self.link_sliders.stateChanged.connect(self.linkSliders)
+#        self.parent.sliderChanged.connect(self.updateLinkedSliders)
         jump_label = QLabel('jump to frame number:')
         self.jump_to = QSpinBox()
         self.jump_to.setRange(self.data.slider_range[0], self.data.slider_range[1])
         self.jump_to.setAccessibleName('jump_to')
         self.jump_to.editingFinished.connect(self.jumpToFrame)
+        
         control_slider_layout.addLayout(from_to_layout)
-        control_slider_layout.addWidget(self.link_sliders, 0, Qt.AlignmentFlag.AlignRight)
+        control_slider_layout.addWidget(self.animation_button, 0, Qt.AlignmentFlag.AlignLeft)
+#        control_slider_layout.addWidget(self.link_sliders, 0, Qt.AlignmentFlag.AlignRight)
         control_slider_layout.addWidget(jump_label, 0, Qt.AlignmentFlag.AlignRight)
         control_slider_layout.addWidget(self.jump_to, 0, Qt.AlignmentFlag.AlignRight)
         plotting_layout.addWidget(self.slider, 1)
@@ -280,33 +294,55 @@ class SubWindow(QWidget):
         layout.addLayout(self.info_grid_layout, 0, 1)
         self.setLayout(layout)
 
-    def linkSliders(self, link):
-        """Update link_sliders variable according to selection."""
-        if link == 0: # sliders not linked
-            self.sliders_linked = False
-            return
-        if link == 2: # sliders to be linked
-            self.sliders_linked = True
-            return
+    def showAnimation(self, s):
+        """Play animation."""
+        start = self.slider_position
+        end = self.slider.maximum()
+        self.show_animation = s
+        pixmap_media_pause = QStyle.StandardPixmap.SP_MediaPause
+        animation_icon_pause = self.parent.style().standardIcon(pixmap_media_pause)
+        QCoreApplication.processEvents() #
+        if s:
+            self.animation_button.setIcon(animation_icon_pause)
+        while self.show_animation:
+            self.sliderChanged(start)
+            QCoreApplication.processEvents()
+            start += 1
+            if start > end and s:
+                start = 0
+            self.slider.setValue(start)
+        pixmap_media_play = QStyle.StandardPixmap.SP_MediaPlay
+        animation_icon_play = self.style().standardIcon(pixmap_media_play)
+        self.animation_button.setIcon(animation_icon_play)
+        self.animation_button.setChecked(False)
 
-    @pyqtSlot(int)
-    def updateLinkedSliders(self, pos):
-        """Update the slider position of the view according to the
-        signal from the main window.
-
-        Parameter:
-        -----
-        position (int):
-            Position of the slider.
-
-        """
-        if self.sliders_linked:
-            if pos > self.data.slider_range[1]:
-                pos = self.data.slider_range[1]
-            self.sliderChanged(pos)
-            self.slider.setValue(pos)
-        else:
-            return
+#    def linkSliders(self, link):
+#        """Update link_sliders variable according to selection."""
+#        if link == 0: # sliders not linked
+#            self.sliders_linked = False
+#            return
+#        if link == 2: # sliders to be linked
+#            self.sliders_linked = True
+#            return
+#
+#    @pyqtSlot(int)
+#    def updateLinkedSliders(self, pos):
+#        """Update the slider position of the view according to the
+#        signal from the main window.
+#
+#        Parameter:
+#        -----
+#        position (int):
+#            Position of the slider.
+#
+#        """
+#        if self.sliders_linked:
+#            if pos > self.data.slider_range[1]:
+#                pos = self.data.slider_range[1]
+#            self.sliderChanged(pos)
+#            self.slider.setValue(pos)
+#        else:
+#            return
 
     def jumpToFrame(self):
         """Update the shown data view, info panel and slider according

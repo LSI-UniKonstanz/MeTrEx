@@ -93,6 +93,7 @@ class Data():
         self.distinct_molecule_types = set() # = name of molecules
         self.distinct_molecules = set() # = name + resid number
         self.anker_selection = False # selection of representative anker atom for molecules
+        self.anker = None # anker atom for representation
 
         self.line_representation_molecule_types = set() # this is set as well upon opening a file, redundant, check if neccessary in the end, = name of molecules
         self.plane_representation_molecule_types = set() # = name of lipid molecules
@@ -377,16 +378,16 @@ class Data():
             dlg.exec()
             
             if dlg.selected_atom is None:
-                anker = 'C'
+                self.anker = 'C'
             else:
-                anker = dlg.selected_atom
+                self.anker = dlg.selected_atom
         else:
-            anker = 'C'
-        print(f'\tselected anker atom: {anker}')
-
+            self.anker = 'C'
+        print(f'\tselected anker atom: {self.anker}')
+        
         for molecule, value in self.drug_molecules.items():
             try:
-                self.drug_molecules_reference[molecule] = self.universe.select_atoms(f'resname {value[0]} and resid {value[1]} and name {anker}')
+                self.drug_molecules_reference[molecule] = self.universe.select_atoms(f'resname {value[0]} and resid {value[1]} and name {self.anker}')
             except:
                 b = False
                 try:

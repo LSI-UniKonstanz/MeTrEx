@@ -920,7 +920,7 @@ class MainWindow(QMainWindow):
         
         # Set the minimum size of the main window
         min_width = 725
-        min_height = 725
+        min_height = 810
         self.setMinimumSize(min_width, min_height)# w, h
         
         # Set the initial size of the main window (larger than the minimum size)
@@ -1130,7 +1130,7 @@ class MainWindow(QMainWindow):
     def setOverviewLayout(self):
         self.overview_data_groupbox = QGroupBox('General Information')
         self.overview_data_groupbox.setAccessibleName('overview_data')
-        self.overview_data_groupbox.setFixedHeight(290)
+        self.overview_data_groupbox.setFixedHeight(340)
         self.overview_data_layout = QVBoxLayout()
         self.overview_data_groupbox.setMaximumWidth(self.size_info_max)
 
@@ -1183,6 +1183,7 @@ class MainWindow(QMainWindow):
         frames_skipped = QLabel(str(self.data.n)+' frame(s) skipped')
         atoms = QLabel('{:,}'.format(self.data.n_atoms).replace(',',' ')+' atoms')
         molecules = QLabel('{:,}'.format(len(self.data.distinct_molecules)).replace(',',' ')+' molecules')
+        anker_atom = QLabel(f'{(self.data.anker)} as anker atom')
         if self.data.max_frame == 0:
             total_frames.setToolTip('This value might not be correct.\nMaybe youre selection of \'k\' or \'n\' in the preprocessing step\nwas not appropriate for your data.')
             frames_skipped.setToolTip('This value might not be correct.\nMaybe youre selection of \'k\' or \'n\' in the preprocessing step\nwas not appropriate for your data.')
@@ -1191,11 +1192,13 @@ class MainWindow(QMainWindow):
         shown_frames_layout.addWidget(frames_skipped)
         shown_frames_layout.addWidget(atoms)
         shown_frames_layout.addWidget(molecules)
+        shown_frames_layout.addWidget(anker_atom)
         shown_frames_layout.setAlignment(self.shown_frames, Qt.AlignmentFlag.AlignRight)
         shown_frames_layout.setAlignment(total_frames, Qt.AlignmentFlag.AlignRight)
         shown_frames_layout.setAlignment(frames_skipped, Qt.AlignmentFlag.AlignRight)
         shown_frames_layout.setAlignment(atoms, Qt.AlignmentFlag.AlignRight)
         shown_frames_layout.setAlignment(molecules, Qt.AlignmentFlag.AlignRight)
+        shown_frames_layout.setAlignment(anker_atom, Qt.AlignmentFlag.AlignRight)
 
         self.overview_data_layout.addLayout(time_layout)
         self.overview_data_layout.addLayout(time_layout_membrane)
@@ -1247,7 +1250,7 @@ class MainWindow(QMainWindow):
         # Settings change buttons
         self.change_settings_groupbox = QGroupBox('Settings')
         self.change_settings_groupbox.setAccessibleName('settings_change_box')
-        self.change_settings_groupbox.setMaximumHeight(240)
+        self.change_settings_groupbox.setFixedHeight(250)
         self.change_settings_groupbox.setMaximumWidth(self.size_info_max)
         self.change_settings_layout = QVBoxLayout()
         # CHANGE COLORMAP
@@ -1267,8 +1270,8 @@ class MainWindow(QMainWindow):
         membrane_changes_layout = QVBoxLayout()
         change_polynom_layout = QHBoxLayout()
         polynom_label = QLabel('Polynomial:')
+        polynom_label
         polynom_label.setToolTip('Change the polynom of \n the regression function \n which is used to compute \n the abtract membrane surface.')
-        polynom_label.setToolTipDuration(5000) # msec!
         
         self.polynom_spin = QSpinBox()
         self.polynom_spin.setAccessibleName('polynom_change')

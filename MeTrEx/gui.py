@@ -62,7 +62,7 @@ from dialogs import OpenDialog, ChangeViewDataDialog,\
     PreprocessingSelectionDialog, ChangeColormapDialog, OpenXVGDialog,\
     AboutDialog, ChangeNameDialog, AnalysisSelectionDialog, ChangeColorDialog, \
     DocumentationDialog
-
+import logging
 
 slider_style = """
 QSlider {{

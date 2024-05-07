@@ -72,7 +72,7 @@ class MainPlotCanvas(FigureCanvasQTAgg):
         """
         self.lines = {}
         self.spheres = {}
-        self.leaflets = {}
+        self.leaflets = {'leaflet0':None,'leaflet1':None}
         self.extreme_labels = {}
         self.line_labels = {}
         self.show_legend = False

@@ -1191,7 +1191,7 @@ class ChangeColorDialog(QDialog):
         self.molecules_layout = QGridLayout()
         i = 0
         j = 0
-        for molecule in molecules:
+        for molecule in sorted(molecules):
             check_btn = QCheckBox(molecule)
             check_btn.clicked.connect(self.changeCheckStateMolecules)
             self.molecules_layout.addWidget(check_btn, i, j) # arrange in two columns

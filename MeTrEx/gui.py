@@ -1802,7 +1802,7 @@ class MainWindow(QMainWindow):
                 except:
                     # no extreme values available (e.g. map position)
                     pass
-        self.data.drug_molecules_linecol = Line3DCollection(self.data.drug_molecules_mseg, cmap=plt.get_cmap('viridis')) # TODO: chekc if color is shown correctly
+        self.data.drug_molecules_linecol = Line3DCollection(self.data.drug_molecules_mseg, cmap=plt.get_cmap('viridis_r')) # TODO: check if color is shown correctly
         # lines will be colored according to set_array
         self.data.drug_molecules_linecol.set_array(self.data.drug_molecules_mvalues)
         self.sc.linecoll = self.sc.ax.add_collection3d(self.data.drug_molecules_linecol)
@@ -2347,6 +2347,7 @@ class MenuAction(QAction):
             for child in self.parent.findChildren(QLabel):
                 if child.accessibleName() == 'analysis_unit_label':
                     child.setText('Position')
+            self.parent.showHideMolecule()
             self.showCautionMessageBox('Frame number mapping has been calculated.', QMessageBox.Icon.Information, 'Information')
 
     def mapIntraDistance(self):
@@ -2448,6 +2449,7 @@ class MenuAction(QAction):
             unit_text = unit_text.decode('utf-8')
             unit_text = 'Distance, ' + unit_text
             self.updateInfoPanelMapping(extremes, unit_text)
+            self.parent.showHideMolecule()
             self.showCautionMessageBox('Distance mapping has been calculated.', QMessageBox.Icon.Information, 'Information')
 
     def belowDistance(self):
@@ -2629,7 +2631,7 @@ class MenuAction(QAction):
                 return
             except:
                 return
-            self.parent.data.drug_molecules_linecol = Line3DCollection(seg_all, cmap=plt.get_cmap('viridis'))
+            self.parent.data.drug_molecules_linecol = Line3DCollection(seg_all, cmap=plt.get_cmap('viridis_r'))
             self.parent.data.drug_molecules_linecol.set_array(speed_all)
             self.parent.data.drug_molecules_show_mapping = True
             self.parent.data.drug_molecules_mseg = seg_all
@@ -2659,6 +2661,7 @@ class MenuAction(QAction):
             unit_text = '[nm/ns]'
             unit_text = 'Speed, ' + unit_text
             self.updateInfoPanelMapping(extremes, unit_text)
+            self.parent.showHideMolecule()
             self.showCautionMessageBox('Speed mapping has been calculated.', QMessageBox.Icon.Information, 'Information')
 
     def updateInfoPanelMapping(self, extremes, unit_text):
@@ -2940,6 +2943,7 @@ class MenuAction(QAction):
                                     child.setHidden(False)
                                 if child.accessibleName() == 'analysis_max_label':
                                     child.setHidden(False)
+                        self.parent.showHideMolecule()
                     else:
                         return
                 else:

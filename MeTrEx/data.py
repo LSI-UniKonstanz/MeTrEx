@@ -418,13 +418,15 @@ class Data():
 #                    # neither C nor CA were atom names within the line representation moleucles, no lines shown
 #                    pass
 
+        self.drug_molecules_reference = dict(sorted(self.drug_molecules_reference.items()))
+        
         n = len(self.drug_molecules_reference)
         if n > 255:
             self.color_list = returnColors(255, self.colormap)
         else: 
             self.color_list = returnColors(n, self.colormap)
         i=0
-        for key, value in self.drug_molecules_reference.items():
+        for key, value in sorted(self.drug_molecules_reference.items()):
                 self.drug_molecules_positions[key] = []
                 self.drug_molecules_show[key] = True # fill dictionary with bool which indicates if this molecule shall be shown in the main view
                 self.drug_molecules_colors[key] = self.color_list[i]

@@ -1833,9 +1833,10 @@ class MainWindow(QMainWindow):
                     xpos = positions[:,0]
                     ypos = positions[:,1]
                     zpos = positions[:,2]
-                    line = self.sc.ax.plot(xpos, ypos, zpos, color=self.data.drug_molecules_colors[molecule])
-                    text = self.sc.ax.text(xpos[0], ypos[0], zpos[0], molecule, None)
-                    self.sc.lines[molecule] = [line, text]
+                    if not self.data.drug_molecules_show_mapping:
+                        line = self.sc.ax.plot(xpos, ypos, zpos, color=self.data.drug_molecules_colors[molecule])
+                        text = self.sc.ax.text(xpos[0], ypos[0], zpos[0], molecule, None)
+                        self.sc.lines[molecule] = [line, text]
                     self.sc.spheres[molecule] = self.sc.ax.scatter(
                         xpos[self.slider_position_molecules],
                         ypos[self.slider_position_molecules],

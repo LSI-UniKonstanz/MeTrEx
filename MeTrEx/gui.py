@@ -2964,7 +2964,7 @@ class MenuAction(QAction):
                     'Save legend of main view',
                     'This view has a legend to be saved with the view.\n'
                     + 'You can save the view and all legends via\n'
-                    + 'the printing icon above the view.'
+                    + 'the saving icon above the view.'
                     )
                 return
             else:

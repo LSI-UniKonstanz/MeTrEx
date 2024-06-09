@@ -977,7 +977,7 @@ class MainWindow(QMainWindow):
         self.sliders_linked = True
         self.show_animation = False
         self.show_selection = False
-        self.selection_from = None
+        self.selection_from = 1
         self.selection_to = None
         self.color_changed_drug_molecules = False
         self.bottom_views = {}
@@ -1306,7 +1306,6 @@ class MainWindow(QMainWindow):
         membrane_changes_layout = QVBoxLayout()
         change_polynom_layout = QHBoxLayout()
         polynom_label = QLabel('Polynomial:')
-        polynom_label
         polynom_label.setToolTip('Change the polynom of \n the regression function \n which is used to compute \n the abtract membrane surface.')
         
         self.polynom_spin = QSpinBox()
@@ -2125,7 +2124,6 @@ class MenuAction(QAction):
                     self.parent,
                     self.parent.data.min_frame + 1,
                     self.parent.data.max_frame + 1,
-                    current=str(self.parent.slider_position_molecules + 1),
                     save = True
                     )
                 dlg.exec()
@@ -2828,7 +2826,11 @@ class MenuAction(QAction):
         else:
             if self.parent.data.drug_molecules_show_mapping:
                 self.resetView()
-            dlg = ChangeViewDataDialog(self.parent, 1, self.parent.data.max_frame + 1) # frames start at 1
+            dlg = ChangeViewDataDialog(
+                self.parent,
+                self.parent.data.min_frame + self.parent.selection_from,
+                self.parent.data.max_frame + self.parent.selection_from,
+            ) # frames start at 1
             dlg.exec()
             if dlg.from_value is None or dlg.to_value is None:
                 return
@@ -2872,7 +2874,7 @@ class MenuAction(QAction):
                 self.parent.slider_molecules.setMaximum(self.parent.data.max_frame)
                 self.parent.slider_membrane.setMaximum(self.parent.data.max_frame)
                 self.parent.show_selection = False
-                self.parent.selection_from = None
+                self.parent.selection_from = 1
                 self.parent.selection_to = None
                 self.parent.set_frame.setMinimum(self.parent.data.min_frame + 1)
                 self.parent.set_frame.setMaximum(self.parent.data.max_frame + 1)
@@ -2991,7 +2993,7 @@ class MenuAction(QAction):
                 if save:
                     # get file name
                     file_filter = 'Image File (*.png)'
-                    response = QFileDialog.getOpenFileName(
+                    response = QFileDialog.getSaveFileName(
                                 parent=self.parent,
                                 caption='Select a filename',
                                 directory=os.getcwd(),

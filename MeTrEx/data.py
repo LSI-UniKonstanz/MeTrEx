@@ -81,6 +81,7 @@ class Data():
         self.min_frame = 0 # index
         self.max_frame = 0 # index
         self.timesteps_mainview = None
+        self.original_timesteps_mainview = None
         self.timesteps_offset = 0
         self.unit_distance = 'nm' # to be set at the beginning?
         self.unit_time = 'ns' # to be set at the beginning?
@@ -518,10 +519,16 @@ class Data():
         # copy original, prevent race conditions
         lock = Lock()
         with lock:
-            self.original_drug_moleucles_positions = deepcopy(self.drug_molecules_positions) 
-            self.original_lipid_molecules_positions = deepcopy(self.lipid_molecules_positions)
-            self.original_lipid_molecules_surface = deepcopy(self.lipid_molecules_surface)
-            self.original_timesteps_mainview = deepcopy(self.timesteps_mainview)
+            if self.original_drug_moleucles_positions is None:
+                self.original_drug_moleucles_positions = deepcopy(self.drug_molecules_positions)
+            if self.original_lipid_molecules_positions is None:
+                self.original_lipid_molecules_positions = deepcopy(
+                    self.lipid_molecules_positions
+                )
+            if self.original_lipid_molecules_surface is None:
+                self.original_lipid_molecules_surface = deepcopy(self.lipid_molecules_surface)
+            if self.original_timesteps_mainview is None:
+                self.original_timesteps_mainview = deepcopy(self.timesteps_mainview)
         # set current values
         for key, values in self.drug_molecules_positions.items():
             self.drug_molecules_positions[key] = values[frame_from:frame_to+1]
@@ -589,7 +596,12 @@ class Data():
         """Calculate polynomial representation for the membrane surface at all given timesteps."""
         self.lipid_molecules_surface['leaflet0'] = []
         self.lipid_molecules_surface['leaflet1'] = []
-        for leaflet, values in self.lipid_molecules_positions.items():
+        
+        if self.original_lipid_molecules_positions is None:
+            lipid_molecules_positions = self.lipid_molecules_positions
+        else:
+            lipid_molecules_positions = self.original_lipid_molecules_positions
+        for leaflet, values in lipid_molecules_positions.items():
             for frame in values:
                 # curve_fit function changes frame data, 
                 # therefore deepcopy is needed

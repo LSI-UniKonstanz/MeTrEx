@@ -169,8 +169,6 @@ class ChangeViewDataDialog(QDialog):
 
     Methods:
     ------
-    checkTypeRange():
-        Checks the validity of the input.
     acceptChanges():
         Accepts the input, closes dialog.
     """
@@ -180,19 +178,15 @@ class ChangeViewDataDialog(QDialog):
         super().__init__(parent)
         self.parent = parent
         self.setWindowTitle('Choose settings')
-        self.selection_accepted = False
         self.save = False
         self.from_value = None
         self.to_value = None
         self.f = from_value
         self.t = to_value
-        self.current = '1'
 
         for key, value in kwargs.items():
             if key == 'save':
                 self.save = value
-            if key == 'current':
-                self.current = value
 
         select_frames = QGroupBox('Select frames indices')
         select_frames.setAccessibleName('select_frames')
@@ -202,15 +196,18 @@ class ChangeViewDataDialog(QDialog):
 
         label_from = QLabel('from')
         label_to = QLabel('to')
-        self.frame_from = QLineEdit()
+        self.frame_from = QSpinBox()
         self.frame_from.setEnabled(True)
-        self.frame_from.editingFinished.connect(self.checkTypeRange)
-        self.frame_to = QLineEdit()
-        self.frame_to.setEnabled(True)
-        self.frame_to.editingFinished.connect(self.checkTypeRange)
-        self.frame_from.setText(self.current)
-        self.frame_to.setText(self.current) 
+        self.frame_from.setMinimum(from_value)
+        self.frame_from.setMaximum(to_value)
+        self.frame_from.setValue(self.f)
 
+        self.frame_to = QSpinBox()
+        self.frame_to.setEnabled(True)
+        self.frame_to.setMinimum(from_value)
+        self.frame_to.setMaximum(to_value)
+        self.frame_to.setValue(self.t)
+        
         description_layout.addWidget(label_from)
         description_layout.addWidget(label_to)
         select_frames_layout.addWidget(self.frame_from)
@@ -231,38 +228,18 @@ class ChangeViewDataDialog(QDialog):
         layout.addWidget(select_frames)
         layout.addWidget(self.buttonBox)
         self.setLayout(layout)
-
-    def checkTypeRange(self):
-        """Checks the type and range of an input."""
-        validation_rule = QIntValidator(self.f, self.t)
-        # 42: no idea what that is for
-        if validation_rule.validate(self.frame_from.text(), 42)[0] == QValidator.State.Acceptable and validation_rule.validate(self.frame_to.text(), 42)[0] == QValidator.State.Acceptable:
-            self.selection_accepted = True
-        elif not validation_rule.validate(self.frame_from.text(), 42)[0] == QValidator.State.Acceptable:
-            self.frame_from.setText('1')
-            self.selection_accepted = False
-        elif not validation_rule.validate(self.frame_to.text(), 42)[0] == QValidator.State.Acceptable:
-            self.frame_to.setText('1')
-            self.selection_accepted = False
-        else: # probably not reachable
-            self.frame_from.setText('1')
-            self.frame_to.setText('1')
-            self.selection_accepted = False
  
     def acceptChanges(self):
         """Check input values for validity and set return values."""
-        if (int(self.frame_to.text()) - int(self.frame_from.text())) < 0:
-            self.selection_accepted = False
+        if (int(self.frame_to.value()) - int(self.frame_from.value())) < 0:
             messageBox = QMessageBox(self)
             messageBox.setWindowTitle('Caution!')
             messageBox.setText('\'To\' index is too small.')
             messageBox.setStandardButtons(QMessageBox.StandardButton.Ok)
             self.buttonBox = messageBox.exec()
-        elif not self.selection_accepted:
-            self.reject()
         else:
-            self.from_value = int(self.frame_from.text())
-            self.to_value = int(self.frame_to.text())
+            self.from_value = int(self.frame_from.value())
+            self.to_value = int(self.frame_to.value())
             self.accept()    
 
 

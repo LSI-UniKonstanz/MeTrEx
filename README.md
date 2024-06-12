@@ -90,7 +90,7 @@ Interesting properties of the interaction might be: the membrane thickness
 and curvature, the speed of the molecules and the intramolecular distances
 between 'C'/'C1' and 'C7'.
 - topology file: 'topology_6PMB.pdb'
-- data file: '500_frames.xtc'7
+- data file: '500_frames.xtc'
 - xvg file: 'op_up_LP0_acyl_1.xvg'
 
 ## LICENCE

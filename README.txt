@@ -15,40 +15,22 @@ shown frame. Exporting data is provided for image, csv and xpdb files.
 
 HOW TO USE:
 
-INSTALLATION
+Installation
 
-1. MeTrEx.exe:
-Windows 10+ is required.
-Open MeTrEx via double clicking the icon, no installation needed.
+### Requirements
+1. You need python version 3.8 or higher 
+2. You need [conda](https://conda.io/projects/conda/en/latest/user-guide/getting-started.html#managing-python) package manager installed on your system.
 
-2. Code: 
-Install the following dependencies:
-moduls
-python	3.7.12	conda-forge
-geomdl	5.3.1	orbingol
-Geomdl.cli
-geomdl.shapes		
-biopython	1.79	conda-forge
-pyqtwebengine	5.15.7	conda-forge
-networkx	2.5.1	conda-forge
-pyqtchart	5.15.7	conda-forge
-PyQt6	6.4.2	pypi
-scipy	1.7.3	conda-forge
-scikit-learn	0.22.1	conda-forge
-pygemo	2.13.0	pypi
-nurbspy	1.1.2	pypi
-mdanalysis	2.1.0	conda-forge pypi?
-mdtraj	1.9.7	conda-forge
-matplotlib	3.5.3	conda-forge
-cm-crameri	1.4	conda-forge
+### Downloading and Installing MeTrEx
+3. Clone the  [GitHub repository](https://github.com/sa-ja/MeTrEx): `git clone https://github.com/sa-ja/MeTrEx`
+4. Build the environment: `cd MeTrEx && conda env create`
+5. Activate the environment: `conda activate MeTrEx`
 
-Run the main.py file: 
-python main.py
+### Run MeTrEx
+6. Start MeTrEx from console: `python MeTrEx/main.py`
 
 USAGE
 
-Download the folder and open the MeTrEx.exe file (maybe you need to wait
-a moment for the program to start). 
 In the provided data you find a topology file 'topology_6PMB.pdb' which
 can be loaded with any of the trajectory files of the type '.xtc', 
 e.g.: '100_frames.xtc'. 
@@ -117,4 +99,4 @@ LICENCE
 MeTrEx can be licenced with 'GPL 3.0 or later'.
 
 AUTHOR
-© Christiane Rohse
+© Christiane Rohse & Beat Ehrmann @AG Schreiber @University of Konstanz

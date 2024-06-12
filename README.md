@@ -21,11 +21,12 @@ shown frame. Exporting data is provided for image, csv and xpdb files.
 
 ### Downloading and Installing MeTrEx
 3. Clone the  [GitHub repository](https://github.com/sa-ja/MeTrEx): `git clone https://github.com/sa-ja/MeTrEx`
-4. Build the environment: `cd MeTrEx && conda env create`
-5. Activate the environment: `conda activate MeTrEx`
+4. Change directory: `cd MeTrEx`
+5. Build the environment: `conda env create`
+6. Activate the environment: `conda activate MeTrEx`
 
 ### Run MeTrEx
-6. Start MeTrEx from console: `python MeTrEx/main.py`
+7. Start MeTrEx from console: `python MeTrEx/main.py`
 
 ## HOW TO USE:
 

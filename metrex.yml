@@ -1,0 +1,16 @@
+name: MeTrEx
+channels:
+  - conda-forge
+dependencies:
+  - python=3.9
+  - scikit-learn>=0.22.1 #1.4.0
+  - matplotlib>=3.5.3 #3.8.2
+  - mdtraj>=1.9.7 #1.9.9
+  - mdanalysis>=2.1.0 #2.7.0
+  - cmcrameri>=1.4 #1.8
+  - numpy
+  - psutil
+  - pip
+  - pip:
+    - PyQt6==6.4.2
+    - PyQt6-tools

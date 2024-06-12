@@ -1,4 +1,4 @@
-MeTrEx - Membrane Trajectory Exploration
+# MeTrEx - Membrane Trajectory Exploration
 
 MeTrEx is a program for the visual exploration of molecular simulation
 data from membranes interacting with small molecules. 
@@ -13,9 +13,7 @@ Additionally, you can load other data files in 'sub windows', shown in
 Sliders and information panels give information about the currently
 shown frame. Exporting data is provided for image, csv and xpdb files. 
 
-HOW TO USE:
-
-Installation
+## Installation
 
 ### Requirements
 1. You need python version 3.8 or higher 
@@ -29,7 +27,7 @@ Installation
 ### Run MeTrEx
 6. Start MeTrEx from console: `python MeTrEx/main.py`
 
-USAGE
+## HOW TO USE:
 
 In the provided data you find a topology file 'topology_6PMB.pdb' which
 can be loaded with any of the trajectory files of the type '.xtc', 
@@ -84,7 +82,7 @@ Menu > File > Save selection
 Directly with the main view and the visualisations in the additional window.
 Additional options are found next to the views. 
 
-TEST DATA:
+## TEST DATA:
 
 The provided data files contain simulation data from a biological
 membrane interacting with six molecules (polymyxins).
@@ -95,8 +93,8 @@ between 'C'/'C1' and 'C7'.
 - data file: '500_frames.xtc'7
 - xvg file: 'op_up_LP0_acyl_1.xvg'
 
-LICENCE
+## LICENCE
 MeTrEx can be licenced with 'GPL 3.0 or later'.
 
-AUTHOR
+## AUTHOR
 © Christiane Rohse & Beat Ehrmann @AG Schreiber @University of Konstanz

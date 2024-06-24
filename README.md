@@ -30,20 +30,12 @@ shown frame. Exporting data is provided for image, csv and xpdb files.
 
 ## HOW TO USE:
 
-In the provided data you find a topology file 'topology_6PMB.pdb' which
-can be loaded with any of the trajectory files of the type '.xtc', 
-e.g.: '100_frames.xtc'. 
-Depending on your computer's available memory
-and processor capabilities, the computation time for the first visuali-
-sation differs. It might take a few seconds for small files and up to 
-hours for the larger files. Therefore it might be best to start exploring
-smaller files first. 
-If you reduce the file size as a preprocessing step, the program will save
-a reduced file as 'reducedData.xtc'.
-For the exploration you can add a mapping, customize your visualizations
-by choosing different colors or a different colormap. You can also change
-the surface abstraction, by changing the calculation properties or don't
-show an abstraction at all (= use positions of the phosphorus atoms). 
+In the provided data you find a topology file 'topology_6PMB.pdb' which can be loaded with any of the trajectory files of the type '.xtc', e.g.: '100_frames.xtc'. 
+Depending on your computer's available memory and processor capabilities, the computation time for the first visualisation differs. 
+It might take a few seconds for small files and up to hours for the larger files. Therefore it might be best to start exploring smaller files first. 
+If you reduce the file size as a preprocessing step, the program will save a reduced file as 'reducedData.xtc'.
+For the exploration you can add a mapping, customize your visualizations by choosing different colors or a different colormap. 
+You can also change the surface abstraction, by changing the calculation properties or don't show an abstraction at all (= use positions of the phosphorus atoms). 
 
 1. Open Files:
 Menu > File > Open 
@@ -51,8 +43,7 @@ Crtl + O
 Select structure and data file, select preprocessing. 
 n = number of frames to skip at the beginning of the data
 k = select every k-th frame to be shown
-Molecule selection: Select the type of molecules that shall represented by its
-trajectory line.
+Molecule selection: Select the type of molecules that shall represented by its trajectory line.
 Remark: 
 If a data reduction is selected, a file 'reducedData.xtc' is stored.
 
@@ -85,11 +76,8 @@ Additional options are found next to the views.
 
 ## TEST DATA:
 
-The provided data files contain simulation data from a biological
-membrane interacting with six molecules (polymyxins).
-Interesting properties of the interaction might be: the membrane thickness
-and curvature, the speed of the molecules and the intramolecular distances
-between 'C'/'C1' and 'C7'.
+The provided data files contain simulation data from a biological membrane interacting with six molecules (polymyxins).
+Interesting properties of the interaction might be: the membrane thickness and curvature, the speed of the molecules and the intramolecular distances between 'C'/'C1' and 'C7'.
 - topology file: 'topology_6PMB.pdb'
 - data file: '500_frames.xtc'
 - xvg file: 'op_up_LP0_acyl_1.xvg'

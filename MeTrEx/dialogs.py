@@ -317,7 +317,6 @@ class PreprocessingSelectionDialog(QDialog):
         wrap_layout.addWidget(preprocessing_explanation)
         wrap_layout.addLayout(preprocess_layout)
         preprocess_groupbox.setLayout(wrap_layout)
-        
         if not self.nkonly:
             vis_selection_groupbox = QGroupBox('Visualization')
             vis_selection_layout = QVBoxLayout()
@@ -325,6 +324,8 @@ class PreprocessingSelectionDialog(QDialog):
             vis_selection_layout.addWidget(label)
             for mol in sorted(molecules): #FIX by Beat, added sorting
                 self.checkBtn = QCheckBox(mol)
+                if mol == 'PMB': #sets PMB (in test data) as standart
+                    self.checkBtn.setChecked(True)
                 vis_selection_layout.addWidget(self.checkBtn)
             vis_selection_groupbox.setLayout(vis_selection_layout)
             

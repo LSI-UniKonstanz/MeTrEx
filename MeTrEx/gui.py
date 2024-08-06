@@ -1290,14 +1290,14 @@ class MainWindow(QMainWindow):
         self.change_settings_groupbox.setMaximumWidth(self.size_info_max)
         self.change_settings_layout = QVBoxLayout()
         # CHANGE COLORMAP
-        change_colormap = QPushButton('Colormap')
+        change_colormap = QPushButton('colormap')
         change_colormap.setToolTip('Change the colormap for all line represenatation molecules.\nIf greyC selected, also membrane color changes.')
         change_colormap.clicked.connect(self.changeColorMap)
         # CHANGE COLOR
-        change_color = QPushButton('Color')
+        change_color = QPushButton('color')
         change_color.clicked.connect(self.changeColor)
         # CHANGE MEMBRANE REPRESENTATION
-        change_membrane_representation = QPushButton('Membrane original')
+        change_membrane_representation = QPushButton('membrane original')
         change_membrane_representation.setToolTip('original: phosphor atoms positions \n abstraction: regression of phosphor atom positions')
         change_membrane_representation.setCheckable(True)
         change_membrane_representation.clicked.connect(self.changeMembraneRepresenation)
@@ -1305,7 +1305,7 @@ class MainWindow(QMainWindow):
         polynom_layout = QHBoxLayout()
         membrane_changes_layout = QVBoxLayout()
         change_polynom_layout = QHBoxLayout()
-        polynom_label = QLabel('Polynomial:')
+        polynom_label = QLabel('polynomial:')
         polynom_label.setToolTip('Change the polynom of \n the regression function \n which is used to compute \n the abtract membrane surface.')
         
         self.polynom_spin = QSpinBox()
@@ -1321,7 +1321,7 @@ class MainWindow(QMainWindow):
         change_polynom_layout.addWidget(self.polynom_current)
         change_polynom_layout.addWidget(self.polynom_spin)
         membrane_extension_layout = QHBoxLayout()
-        membrane_extension_label = QLabel('Expansion:')
+        membrane_extension_label = QLabel('expansion:')
         membrane_extension_label.setToolTip('Set the expansion of \n the membrane surface in percentage \n to prevent an undesired decline \n of the membrane at its edges.')
 
         self.expansion_spin = QSpinBox()
@@ -1339,7 +1339,7 @@ class MainWindow(QMainWindow):
         membrane_changes_layout.addLayout(change_polynom_layout)
         membrane_changes_layout.addWidget(membrane_extension_label)
         membrane_changes_layout.addLayout(membrane_extension_layout)
-        polynom_button = QPushButton('Apply')
+        polynom_button = QPushButton('apply')
         polynom_button.clicked.connect(self.updatePolynom)
         polynom_button.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
         polynom_button.setMaximumHeight(90)
@@ -1366,7 +1366,7 @@ class MainWindow(QMainWindow):
         self.show_hide_info_scroll.setFrameShape(QFrame.Shape.NoFrame)
 
         self.show_hide_layout = QGridLayout()
-        self.mapping_unit_label = QLabel('Analysis, Unit')
+        self.mapping_unit_label = QLabel('analysis, unit')
         self.mapping_unit_label.setAccessibleName('analysis_unit_label')
         self.mapping_unit_label.setMinimumWidth(self.size_analysis_unit_label)
         self.mapping_unit_label.setHidden(False)

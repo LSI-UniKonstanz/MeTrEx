@@ -1219,7 +1219,7 @@ class MainWindow(QMainWindow):
         frames_skipped = QLabel(str(self.data.n)+' frame(s) skipped')
         atoms = QLabel('{:,}'.format(self.data.n_atoms).replace(',',' ')+' atoms')
         molecules = QLabel('{:,}'.format(len(self.data.distinct_molecules)).replace(',',' ')+' molecules')
-        anker_atom = QLabel(f'{(self.data.anker)} as anker atom')
+        proxy_atom = QLabel(f'{(self.data.proxy)} as proxy atom')
         if self.data.max_frame == 0:
             total_frames.setToolTip('This value might not be correct.\nMaybe youre selection of \'k\' or \'n\' in the preprocessing step\nwas not appropriate for your data.')
             frames_skipped.setToolTip('This value might not be correct.\nMaybe youre selection of \'k\' or \'n\' in the preprocessing step\nwas not appropriate for your data.')
@@ -1228,13 +1228,13 @@ class MainWindow(QMainWindow):
         shown_frames_layout.addWidget(frames_skipped)
         shown_frames_layout.addWidget(atoms)
         shown_frames_layout.addWidget(molecules)
-        shown_frames_layout.addWidget(anker_atom)
+        shown_frames_layout.addWidget(proxy_atom)
         shown_frames_layout.setAlignment(self.shown_frames, Qt.AlignmentFlag.AlignRight)
         shown_frames_layout.setAlignment(total_frames, Qt.AlignmentFlag.AlignRight)
         shown_frames_layout.setAlignment(frames_skipped, Qt.AlignmentFlag.AlignRight)
         shown_frames_layout.setAlignment(atoms, Qt.AlignmentFlag.AlignRight)
         shown_frames_layout.setAlignment(molecules, Qt.AlignmentFlag.AlignRight)
-        shown_frames_layout.setAlignment(anker_atom, Qt.AlignmentFlag.AlignRight)
+        shown_frames_layout.setAlignment(proxy_atom, Qt.AlignmentFlag.AlignRight)
 
         self.overview_data_layout.addLayout(time_layout)
         self.overview_data_layout.addLayout(time_layout_membrane)
@@ -2212,7 +2212,7 @@ class MenuAction(QAction):
                     return
                 # set data collected from dialog
                 self.parent.data.line_representation_molecule_types = dlg2.selected_molecules
-                self.parent.data.anker_selection = dlg2.anker_selection
+                self.parent.data.proxy_selection = dlg2.proxy_selection
                 self.parent.data.n = dlg2.n
                 self.parent.data.k = dlg2.k
                 try:

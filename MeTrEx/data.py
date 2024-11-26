@@ -93,8 +93,8 @@ class Data():
         # self.distinctMol() -> is called upon opening files
         self.distinct_molecule_types = set() # = name of molecules
         self.distinct_molecules = set() # = name + resid number
-        self.anker_selection = False # selection of representative anker atom for molecules
-        self.anker = None # anker atom for representation
+        self.proxy_selection = False # selection of representative proxy atom for molecules
+        self.proxy = None # proxy atom for representation
 
         self.line_representation_molecule_types = set() # this is set as well upon opening a file, redundant, check if neccessary in the end, = name of molecules
         self.plane_representation_molecule_types = set() # = name of lipid molecules
@@ -369,7 +369,7 @@ class Data():
                 if molecule.startswith(molecule_type):
                     self.drug_molecules[molecule] = [molecule_type, molecule[len(molecule_type):]]
 ###
-        if self.anker_selection == True:
+        if self.proxy_selection == True:
             atoms_dict = dict()
             for molecule, value in self.drug_molecules.items():
                 atoms_dict[molecule] = self.universe.select_atoms(f'resname {value[0]} and resid {value[1]} and not name H*')
@@ -379,30 +379,30 @@ class Data():
             dlg.exec()
             
             if dlg.selected_atom is None:
-                self.anker = 'C'
+                self.proxy = 'C'
             else:
-                self.anker = dlg.selected_atom
+                self.proxy = dlg.selected_atom
         else:
-            self.anker = 'C'
-        print(f'\tselected anker atom: {self.anker}')
+            self.proxy = 'C'
+        print(f'\tselected proxy atom: {self.proxy}')
         
         for molecule, value in self.drug_molecules.items():
             try:
-                self.drug_molecules_reference[molecule] = self.universe.select_atoms(f'resname {value[0]} and resid {value[1]} and name {self.anker}')
+                self.drug_molecules_reference[molecule] = self.universe.select_atoms(f'resname {value[0]} and resid {value[1]} and name {self.proxy}')
             except:
                 b = False
                 try:
                     self.drug_molecules_reference[molecule] = self.universe.select_atoms('resname ' + value[0] + ' and resid ' + value[1] + ' and name C')
-                    print(f'\tautomated anker atom: C for {molecule}')
+                    print(f'\tautomated proxy atom: C for {molecule}')
                 except:
                     b = True
                 if b:
                     try:
                         self.drug_molecules_reference[molecule] = self.universe.select_atoms('resname ' + value[0] + ' and resid ' + value[1] + ' and name CA')
-                        print(f'\tautomated anker atom: CA for {molecule}')
+                        print(f'\tautomated proxy atom: CA for {molecule}')
                     except:
                         # neither C nor CA were atom names within the line representation moleucles, no lines shown
-                        print('\t no anker atom for {molecule}')
+                        print('\t no proxy atom for {molecule}')
                         pass
     ###
 #        for molecule, value in self.drug_molecules.items():

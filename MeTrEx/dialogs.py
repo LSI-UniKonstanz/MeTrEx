@@ -274,8 +274,8 @@ class PreprocessingSelectionDialog(QDialog):
         self.k = 1
         self.selected_molecules = None
         self.nkonly = nkonly
-        self.anker_selection = False
-        self.anker_selection_text = 'select manually'
+        self.proxy_selection = False
+        self.proxy_selection_text = 'select manually'
 
 
         preprocess_groupbox = QGroupBox('Data Reduction')
@@ -329,13 +329,13 @@ class PreprocessingSelectionDialog(QDialog):
                 vis_selection_layout.addWidget(self.checkBtn)
             vis_selection_groupbox.setLayout(vis_selection_layout)
             
-            anker_selection_groupbox = QGroupBox('Anker Atom')
-            anker_selection_layout = QVBoxLayout()
-            anker_label = QLabel('Do you want to manually select an anker atom for the line representation?')
-            anker_selection_layout.addWidget(anker_label)
-            self.checkAnker = QCheckBox(self.anker_selection_text)
-            anker_selection_layout.addWidget(self.checkAnker)
-            anker_selection_groupbox.setLayout(anker_selection_layout)
+            proxy_selection_groupbox = QGroupBox('Proxy Atom')
+            proxy_selection_layout = QVBoxLayout()
+            proxy_label = QLabel('Do you want to manually select an proxy atom for the line representation?')
+            proxy_selection_layout.addWidget(proxy_label)
+            self.checkProxy = QCheckBox(self.proxy_selection_text)
+            proxy_selection_layout.addWidget(self.checkProxy)
+            proxy_selection_groupbox.setLayout(proxy_selection_layout)
             
         qbtn = QDialogButtonBox.StandardButton.Ok
         self.button_box = QDialogButtonBox(qbtn)
@@ -345,7 +345,7 @@ class PreprocessingSelectionDialog(QDialog):
         layout.addWidget(preprocess_groupbox)
         if not self.nkonly:
             layout.addWidget(vis_selection_groupbox)
-            layout.addWidget(anker_selection_groupbox)
+            layout.addWidget(proxy_selection_groupbox)
         layout.addWidget(self.button_box)
         self.setLayout(layout)
 
@@ -355,8 +355,8 @@ class PreprocessingSelectionDialog(QDialog):
         if not self.nkonly:
             for child in self.findChildren(QCheckBox):
                 if child.isChecked() == True: #Check for selection
-                    if child.text() == self.anker_selection_text: #Check if selection is for manual anker selection
-                        self.anker_selection = True
+                    if child.text() == self.proxy_selection_text: #Check if selection is for manual proxy selection
+                        self.proxy_selection = True
                     else:
                         self.selected_molecules.add(child.text())
         for child in self.findChildren(QSpinBox):
@@ -1395,7 +1395,7 @@ class SelectRepresentationAtom(QDialog):
     def initUI(self):
         layout = QVBoxLayout()
         
-        instruction_label = QLabel("Please select an atom (of the selected molecule) for line representation:")
+        instruction_label = QLabel("Please select a proxy atom (of the selected molecules) for line representation:")
         layout.addWidget(instruction_label)
         
         self.list_widget = QListWidget()
@@ -1409,7 +1409,7 @@ class SelectRepresentationAtom(QDialog):
         layout.addWidget(buttons)
 
         self.setLayout(layout)
-        self.setWindowTitle("Select anker atom")
+        self.setWindowTitle("Select proxy atom")
 
     def onItemClicked(self, item):
         self.selected_atom = item.text()

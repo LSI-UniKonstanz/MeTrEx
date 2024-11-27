@@ -14,7 +14,8 @@ from gui import MainWindow
 
 app = QApplication(sys.argv)
 # set Icon for all windows
-app.setWindowIcon(QIcon('./windowIcon.png'))
+app.setApplicationDisplayName('MeTrEx')
+app.setWindowIcon(QIcon('../icon/MeTrExIcon.png'))
 
 w = MainWindow()
 w.show()

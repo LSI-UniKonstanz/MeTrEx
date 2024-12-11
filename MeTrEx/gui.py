@@ -2243,7 +2243,7 @@ class MenuAction(QAction):
             # Get CPU frequency for speed estimation
             cpu_freq = psutil.cpu_freq().current + 0.0001
             # caluclate aproximal read time in seconds
-            read_time = round((data_file_size * 700) / (cpu_freq * 10**6))
+            read_time = round(((data_file_size / self.parent.data.k) * 700) / (cpu_freq * 10**6))
             if platform.system() == 'Windows':
                 read_time = read_time * 4
                 

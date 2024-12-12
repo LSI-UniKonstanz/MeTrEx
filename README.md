@@ -9,7 +9,7 @@ Its main feature is to show an overview of the molecules' course throughout the 
 # Availability & Download
 Download precompiled binaries for the most recent version of **MeTrEx**. 
 
-See the [Installation](#Installation) section for instructions on the download and installation of **MeTrEx**
+See the [Installation](##-From-Source) section for instructions on the download and installation of **MeTrEx**
 <!--
 **MeTrEx** source code is (also) available from our [GitHub repository](https://github.com/sa-ja/MeTrEx). 
 ## Linux
@@ -34,20 +34,20 @@ Precompiled binaries are found in the [[#Availability & Download]] section.
 6. Start MeTrEx from the console: `python MeTrEx/main.py`
 # Manual
 ## Main Window
-The application window of **MeTrEx** is made up of three parts ([see figure below]())
+The application window of **MeTrEx** is made up of three parts ([see figure below](######-MeTrEx-Overview))
 
 1. The MainView
 2. The information and interaction panel
 3. The BottomView(s)
 
 ###### MeTrEx Overview 
-![[Pictures/MeTrExOverview.png]] 
+![MeTrExOverview](Pictures/MeTrExOverview.png)
 ## Load Data
 First, you must load two files to visualise and analyse MD data with **MeTrEx**. 
 
-To do so, you can either navigate to *File* > *Open* in the menu bar or use the *ctrl+O* shortcut. [[#Open File|See picture]].
-Then, you need to specify a topology file and a file containing simulation data. [[#Select File|See picture]]
-Afterwards, another dialogue opens, allowing a data reduction by skipping every k-th frame or n frame at the beginning of the data. [[#Choose Settings|See picture]].
+To do so, you can either navigate to *File* > *Open* in the menu bar or use the *ctrl+O* shortcut. [See picture](######-Open-File).
+Then, you need to specify a topology file and a file containing simulation data.[See picture](######-Select-File).
+Afterwards, another dialogue opens, allowing a data reduction by skipping every k-th frame or n frame at the beginning of the data. [See picture](######-Choose-Settings).
 	k = Select every k-th frame to be shown
 	n = number of frames to skip at the beginning of the data
 
@@ -57,17 +57,17 @@ Once the molecules are chosen and, if applicable, the proxy atom is selected, th
 This can take some time. A rough estimate will be displayed.
 
 ###### Open File
-![[Pictures/OpenFile.png]]
+![](Pictures/OpenFile.png)
 ###### Select File
-![[Pictures/SelectFile.png]]
+![](Pictures/SelectFile.png)
 ###### Choose Settings
-![[Pictures/MeTrEx_ChooseSettings_S.png]]
+![](Pictures/MeTrEx_ChooseSettings_S.png)
 ## Navigate in MainView
 There are multiple ways one can interact with the main graph and navigate with it.
 
 By clicking and holding the graph, you can rotate it freely.
 
-On the top left of the MainView you can find the control panel with six button options. [[#Control Panel|See picture]].
+On the top left of the MainView you can find the control panel with six button options. [See picture](######-Control-Panel).
 - The house button 🏠 is used to reset the main graph to its initial view
 - The two arrow buttons ⬅️ ➡️ can be used to go back or forward to a previous view setting
 - Once clicked, the cross-arrow button changes the function of clicking and holding the graph from rotating it to moving and positioning it along the x-, y— and z-axis. This is again deactivated when the cross-arrow button is clicked again, or the magnification glass button is selected.
@@ -83,9 +83,9 @@ Pressing the play button ▶️ starts or stops a time laps of the represented d
 
 The 'jump to frame number' selector can be used to switch to a chosen frame.
 ###### Control Panel
-![[Pictures/ControlPanel.png]]
+![](Pictures/ControlPanel.png)
 ## Using the information and interaction panel 
-The interaction panel consists of 3 panels: **General Information**, **Settings** and the molecule representation panel (**Disable/Enable Visibility**). [[#Interaction Panel|See picture]].
+The interaction panel consists of 3 panels: **General Information**, **Settings** and the molecule representation panel (**Disable/Enable Visibility**). [See picture](######-Interaction-Panel).
 
 Inside the **General Information panel** you find information for the position and exact simulation time of the current slider position/frame shown in the MainView.
 Additional information about the simulation and representation is also displayed here.
@@ -96,23 +96,23 @@ The **Settings** panel offers a variety of options:
 - `Membrane original` lets you switch between a membrane abstraction and the original membrane representation
 - `Polynomial` and `Expansion` let you choose the lipid surface regression values and recalculate the membrane abstraction. The polynomial can be modified in the range from 3 to 15, with membrane expansion from 5% to 30%. Once you set your values, press `Apply` to recalculate. Depending on the data and values, this can take some time to compute.
 
-The molecule representation panel (**Disable/Enable Visibility**) depicts the individual molecules which were chosen for representation in [[#Load Data]], [[#Control Panel|see picture]].
-If one of the three mapping methods of [[#Change View]] is chosen, the respective minimum and maximum are displayed next, together with the associated frame number.
+The molecule representation panel (**Disable/Enable Visibility**) depicts the individual molecules which were chosen for representation in [Load Data](##-Load-Data), [See picture](######-Control-Panel).
+If one of the three mapping methods of [Change View](##-Change-View) is chosen, the respective minimum and maximum are displayed next, together with the associated frame number.
 By clicking the molecule name you can disable or enable individual molecule representations. 
 The buttons `upper leaflet` and `lower leaflet` disable or enable the corresponding membrane representation.
 ###### Interaction Panel 
-![[Pictures/interactionPanel.png]] 
+![](Pictures/interactionPanel.png)
 
 ## Change View
-To modify and further analyse the data multiple options to change the view and provide further graphs are available. All these options are found in the menu bar under [[#Change View Path|`View`]].
+Multiple options are available to modify and further analyse the data, such as changing the view and providing further graphs. All these options are in the menu bar under [`View`](######-Change-View-Path).
 ### Modify the MainView
 The following methods provide an overview of different mapping functions inside the MainView.
 #### Select frame range
 To select a specific range of frames go to *View* > *Select frames* and select a range of frames you want the data to be reduced to. If you want to return to the original MainView with all frames use *View* > *Reset*. 
 #### Show frame position
-If you want to see the chronological sequence of the trajectories indicated by a colour gradient, use *View* > *Map Position*. To reset the MainView to its original state use *View* > *Reset*.
+If you want to see the chronological sequence of the trajectories indicated by a colour gradient, use *View* > *Map Position*. To reset the MainView to its original state, use *View* > *Reset*.
 #### Show intramolecular distances
-To visualise the changes in the intramolecular distance [Å] between exactly two different atoms of the representative molecules over time as a colour gradient, use *View* > *Map intramolecular distance*. A [[#Distance Selection|dialog]] will appear in which you have to select a pair of atoms for each representative molecule. Add the selection to the final selection by pressing `+` or remove an incorrect selection by pressing `-` to fix the incorrect entry. 
+To visualise the changes in the intramolecular distance [Å] between exactly two different atoms of the representative molecules over time as a colour gradient, use *View* > *Map intramolecular distance*. A [dialog](######-Distance-Selection) will appear, and you will have to select a pair of atoms for each representative molecule. Add the selection to the final selection by pressing `+` or remove an incorrect selection by pressing `-` to fix the incorrect entry. 
 The molecule representation panel in the interaction panel will show the minimal and maximal intermolecular distance value as well as the corresponding frame number.
 To reset the MainView to its original state use *View* > *Reset*. 
 #### Show molecular speed 
@@ -122,8 +122,8 @@ To reset the MainView to its original state use *View* > *Reset*.
 #### Reset view
 To reset the MainView to its original state use *View* > *Reset*. 
 ### Add and Modify BottomView
-The BottomView provides a more in-depth analysis and visualisation of the mapping methods described in [[#Modify MainView]].
-Each BottomView panel has three areas, the graphical display, the statistical display and a control panel; [[#MeTrEx Overview|see picture [3].]]
+The BottomView provides a more in-depth analysis and visualisation of the mapping methods described in [Modify MainView](###-Modify-MainView).
+Each BottomView panel has three areas, the graphical display, the statistical display and a control panel; [see picture (3)](######-MeTrEx-Overview)
 The control panel has the option to select a specific frame for this BottomView. To save the graph of the BottomView use the `save` button. When the check box in the statistical display is activated, a CSV file of the data shown in the overview is saved, too. Use the `-` button to remove this instance of the BottomView.
 Additionally, in a single instance view, you can press `s/h` to show or hide minimum and maximum labels.
 #### Show molecular speeds in BottomView
@@ -133,33 +133,33 @@ To show the changes in the intramolecular distance [Å] between exactly two diff
 ### Full-Screen Mode
 To switch to full screen mode go to *View* > *Enter Full Screen* or use the shortcut `ctrl`+`F`.
 ###### Change View Path
-![[Pictures/ChangeView.png]]
+![](Pictures/ChangeView.png)
 ###### Distance Selection
-![[Pictures/DistanceSelection.png]]
+![](Pictures/DistanceSelection.png)
 ## Further Analysis 
-To display data from an XVG file, go to *Analysis* > *Show XY-XVG file* ([[#Show Analysis|see picture]]). You need to provide a file and then select at least one representative molecule ([[#XVG Selection|see picture]]).
-An additional window will open ([[#Sub-Window|see picture]]). You can use the slider to show the changes over the time scale or the `jump to frame number` to highlight a specific frame. Pressing the play button ▶️ starts or stops a time laps of the represented data. 
+To display data from an XVG file, go to *Analysis* > *Show XY-XVG file* ([see picture](######-Show-Analysis)). You need to provide a file and then select at least one representative molecule ([see picture](######-XVG-Selection)).
+An additional window will open ([see picture](#######-SubWindow)). You can use the slider to show the changes over the time scale or the `jump to frame number` to highlight a specific frame. Pressing the play button ▶️ starts or stops a time laps of the represented data. 
 The sidebar options provide the option to change the colours of the graph, modify the legend, and hide the sphere, which indicates the currently selected frame. The `save` button will save the graph as a .png file.
 ###### Show Analysis 
-![[Pictures/ShowAnalysis.png]] 
+![](Pictures/ShowAnalysis.png)
 ###### XVG Selection
-![[Pictures/XVGSelection.png]]
+![](Pictures/XVGSelection.png)
 ###### Sub-Window
-![[Pictures/SubWindow.png]]
+![](Pictures/SubWindow.png)
 ## Save File
 There are different options to save your analysis or visualisations.
 ### Save PDB file
 In the menubar, you can use *File* > *Save to XPDB* to save interesting structures as a PDB file. 
 Use  *File* > *Save selection to XPDB* to save only selected molecules in a PDB file.
 ### Save image
-If you want to save the view and all legends use the *save button* 💾 on top of the MainView as described in [[#Navigate in Main Graph]].
-To save only the legend of the MainView use *File* > *Save Figure Legend* ([[#Saving|see picture]]).
+If you want to save the view and all legends use the *save button* 💾 on top of the MainView as described in [Navigate in MainView](##-Navigate-in-MainView).
+To save only the legend of the MainView use *File* > *Save Figure Legend* ([see picture]((######-MeTrEx-Overview))).
 
-To save the graph of the BottomView, use the `save` button on the right side of the graph. When the check box in the analysis-overview box is activated, a CSV file of the data shown in the overview is saved, too.
+To save the BottomView graph, use the `save` button on the right side of the graph. When the check box in the analysis-overview box is activated, a CSV file of the data shown in the overview is also saved.
 
 When working in a separate analysis window, you can save the corresponding graphic with the `save` button on the right side of the additional window. 
 ###### Saving 
-![[Pictures/Saving.png]]
+![](Pictures/Saving.png)
 # License
 MeTrEx is licensed under the [GPL3](https://www.gnu.org/licenses/gpl-3.0.en.html). 
 

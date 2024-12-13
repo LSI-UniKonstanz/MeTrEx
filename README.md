@@ -1,7 +1,7 @@
 # MeTrEx - Membrane Trajectory Exploration
 MeTrEx (**Me**mbrane **Tr**ajectory **Ex**ploration) is a Python program for visualising molecular simulation data from membranes interacting with small molecules. 
 
-Its main feature is to show an overview of the molecules' course throughout the simulation with an abstract visualisation of the membrane. This overview of the data is shown on the 'main view', shown as soon as the data is loaded. Different analyses can be mapped onto the main view. These analyses can also be shown in plots below the main view in 'BottomViews'. Additionally, you can load other data files in 'SubWindows', shown in 'sub plots'.  Sliders and information panels give information about the currently shown frame. Exporting data is provided for image, CSV and XPDB files.
+Its main feature is to show an overview of the molecules' course throughout the simulation with an abstract visualisation of the membrane. This overview of the data is shown on the 'main view', shown as soon as the data is loaded. Different analyses can be mapped onto the main view. These analyses can also be shown in plots below the main view in 'BottomViews'. Additionally, you can load other data files in 'SubView', shown in 'sub plots'.  Sliders and information panels give information about the currently shown frame. Exporting data is provided for image, CSV and XPDB files.
 
 ![MeTrExWhite](Pictures/MeTrExWhite.png)
 

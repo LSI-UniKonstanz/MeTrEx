@@ -2,6 +2,7 @@
 MeTrEx (**Me**mbrane **Tr**ajectory **Ex**ploration) is a Python program for visualising molecular simulation data from membranes interacting with small molecules. 
 
 Its main feature is to show an overview of the molecules' course throughout the simulation with an abstract visualisation of the membrane. This overview of the data is shown on the 'main view', shown as soon as the data is loaded. Different analyses can be mapped onto the main view. These analyses can also be shown in plots below the main view in 'BottomViews'. Additionally, you can load other data files in 'SubWindows', shown in 'sub plots'.  Sliders and information panels give information about the currently shown frame. Exporting data is provided for image, CSV and XPDB files.
+
 ![MeTrExWhite](Pictures/MeTrExWhite.png)
 
 ![MeTrExBlack](Pictures/MeTrExBlack.png)
@@ -81,7 +82,9 @@ The bottom slider changes the frame of the membrane representation.
 Pressing the play button ▶️ starts or stops a time laps of the represented data.
 
 The 'jump to frame number' selector can be used to switch to a chosen frame.
+
 ![](Pictures/ControlPanel.png)
+
 ## Using the information and interaction panel 
 The interaction panel consists of 3 panels: **General Information**, **Settings** and the molecule representation panel (**Disable/Enable Visibility**). [See picture](Pictures/interactionPanel.png).
 
@@ -98,6 +101,7 @@ The molecule representation panel (**Disable/Enable Visibility**) depicts the in
 If one of the three mapping methods of [Change View](#change-view) is chosen, the respective minimum and maximum are displayed next, together with the associated frame number.
 By clicking the molecule name you can disable or enable individual molecule representations. 
 The buttons `upper leaflet` and `lower leaflet` disable or enable the corresponding membrane representation.
+
 ![](Pictures/interactionPanel.png)
 
 ## Change View
@@ -129,15 +133,19 @@ To show the progression of the speed [nm/ns] of the representative molecules or 
 To show the changes in the intramolecular distance [Å] between exactly two different atoms of the representative molecules or all other molecules of the simulation in the BottomView, you can go to *View* > *Show below* > *Distance* to display one instance in a single graph or *View* > *Show below* > *Multiple Distance* to display multiple instances in one graph.
 ### Full-Screen Mode
 To switch to full screen mode go to *View* > *Enter Full Screen* or use the shortcut `ctrl`+`F`.
+
 ![](Pictures/ChangeView.png)
 ![](Pictures/DistanceSelection.png)
+
 ## Further Analysis 
 To display data from an XVG file, go to *Analysis* > *Show XY-XVG file* ([see picture](Pictures/ShowAnalysis.png)). You need to provide a file and then select at least one representative molecule ([see picture](Pictures/XVGSelection.png)).  <br/> 
 An additional window will open ([see picture](Pictures/SubWindow.png)). You can use the slider to show the changes over the time scale or the `jump to frame number` to highlight a specific frame. Pressing the play button ▶️ starts or stops a time laps of the represented data.  <br/> 
 The sidebar options provide the option to change the colours of the graph, modify the legend, and hide the sphere, which indicates the currently selected frame. The `save` button will save the graph as a .png file.  <br/> 
+
 ![](Pictures/ShowAnalysis.png)
 ![](Pictures/XVGSelection.png)
 ![](Pictures/SubWindow.png)
+
 ## Save File
 There are different options to save your analysis or visualisations.
 ### Save PDB file
@@ -150,8 +158,9 @@ To save only the legend of the MainView use *File* > *Save Figure Legend* ([see 
 To save the BottomView graph, use the `save` button on the right side of the graph. When the check box in the analysis-overview box is activated, a CSV file of the data shown in the overview is also saved.
 
 When working in a separate analysis window, you can save the corresponding graphic with the `save` button on the right side of the additional window. 
-###### Saving 
+
 ![](Pictures/Saving.png)
+
 # License
 MeTrEx is licensed under the [GPL3](https://www.gnu.org/licenses/gpl-3.0.en.html). 
 

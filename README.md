@@ -30,7 +30,9 @@ Precompiled binaries are found in the [[#Availability & Download]] section.
 2. You need [conda](https://conda.io/projects/conda/en/latest/user-guide/getting-started.html#managing-python) package manager installed on your system.
 ### Downloading and Installing MeTrEx
 3. Clone the  [GitHub repository](https://github.com/sa-ja/MeTrEx): `git clone https://github.com/sa-ja/MeTrEx`
-4. Build the environment: `cd MeTrEx && conda env create`
+4. Build the environment: `cd MeTrEx && conda env create` (for MacOS and Windows)
+or <br/>
+4. Build the environment: `cd MeTrEx && conda env create --file=metrex_linux.yml`  (for Linux)
 5. Activate the environment: `conda activate MeTrEx`
 ### Run MeTrEx
 6. Start MeTrEx from the console: `python MeTrEx/main.py`

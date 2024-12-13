@@ -119,7 +119,7 @@ To reset the MainView to its original state use *View* > *Reset*.
 #### Reset view
 To reset the MainView to its original state use *View* > *Reset*. 
 ### Add and Modify BottomView
-The BottomView provides a more in-depth analysis and visualisation of the mapping methods described in [Modify MainView](#modify-mainview).
+The BottomView provides a more in-depth analysis and visualisation of the mapping methods described in [Modify MainView](#modify-the-mainview).
 Each BottomView panel has three areas, the graphical display, the statistical display and a control panel; [see picture (3)](#metrex-overview)
 The control panel has the option to select a specific frame for this BottomView. To save the graph of the BottomView use the `save` button. When the check box in the statistical display is activated, a CSV file of the data shown in the overview is saved, too. Use the `-` button to remove this instance of the BottomView.
 Additionally, in a single instance view, you can press `s/h` to show or hide minimum and maximum labels.

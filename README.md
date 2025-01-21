@@ -170,7 +170,7 @@ MeTrEx is licensed under the [GPL3](https://www.gnu.org/licenses/gpl-3.0.en.htm
 MeTrEx is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY, without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 # Cite
-Created by Christiane Rohse and Beat Ehrmann @AG Schreiber at University of Konstanz
+Created by Christiane Rohse, Sabrina Jaeger-Honz and Beat Ehrmann @AG Schreiber at University of Konstanz
 
 When using MeTrEx, please cite:
 
